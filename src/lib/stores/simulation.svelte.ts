@@ -37,17 +37,15 @@ export class SimulationStore {
 
   // Editable Terrain Points
   terrainPoints = $state<PointTerrain[]>([
-    { x: 0, y: 350, friction: 0.9 },
-    { x: 120, y: 330, friction: 0.9 },
-    { x: 240, y: 270, friction: 0.9 },
-    { x: 380, y: 370, friction: 0.4 }, // Low friction
-    { x: 500, y: 420, friction: 0.4 }, // Low friction
-    { x: 620, y: 480, friction: 0.1 }, // Extremely slippery (Ice)
-    { x: 760, y: 440, friction: 0.1 }, // Extremely slippery (Ice)
-    { x: 900, y: 310, friction: 0.9 },
-    { x: 1040, y: 350, friction: 1.6 }, // Rough terrain (high friction)
-    { x: 1180, y: 330, friction: 0.9 },
-    { x: 1300, y: 360, friction: 0.9 }
+    { x: 0, y: 360, friction: 0.9 },
+    { x: 120, y: 360, friction: 0.9 },
+    { x: 240, y: 360, friction: 0.9 },
+    { x: 360, y: 360, friction: 0.9 },
+    { x: 480, y: 360, friction: 0.9 },
+    { x: 600, y: 360, friction: 0.9 },
+    { x: 720, y: 360, friction: 0.9 },
+    { x: 840, y: 360, friction: 0.9 },
+    { x: 900, y: 360, friction: 0.9 }
   ]);
 
   // Derived Segments
@@ -325,17 +323,15 @@ export class SimulationStore {
   // Reset terrain to starting shape
   resetTerrainToDefault() {
     this.terrainPoints = [
-      { x: 0, y: 350, friction: 0.9 },
-      { x: 120, y: 330, friction: 0.9 },
-      { x: 240, y: 270, friction: 0.9 },
-      { x: 380, y: 370, friction: 0.4 },
-      { x: 500, y: 420, friction: 0.4 },
-      { x: 620, y: 480, friction: 0.1 },
-      { x: 760, y: 440, friction: 0.1 },
-      { x: 900, y: 310, friction: 0.9 },
-      { x: 1040, y: 350, friction: 1.6 },
-      { x: 1180, y: 330, friction: 0.9 },
-      { x: 1300, y: 360, friction: 0.9 }
+      { x: 0, y: 360, friction: 0.9 },
+      { x: 120, y: 360, friction: 0.9 },
+      { x: 240, y: 360, friction: 0.9 },
+      { x: 360, y: 360, friction: 0.9 },
+      { x: 480, y: 360, friction: 0.9 },
+      { x: 600, y: 360, friction: 0.9 },
+      { x: 720, y: 360, friction: 0.9 },
+      { x: 840, y: 360, friction: 0.9 },
+      { x: 900, y: 360, friction: 0.9 }
     ];
     this.selectedPointIndex = null;
     this.selectedSegmentIndex = null;
