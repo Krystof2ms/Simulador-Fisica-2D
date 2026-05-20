@@ -29,6 +29,7 @@ export class SimulationStore {
   time = $state(0);
   maxTime = 16.00;
   activeTool = $state<ToolType>('points');
+  startPositionEditMode = $state(false);
   
   // Selection/Hover indices
   selectedPointIndex = $state<number | null>(null);
@@ -67,7 +68,7 @@ export class SimulationStore {
   }));
 
   // Initial State parameters for resetting
-  initialVehicleState = {
+  initialVehicleState = $state({
     position: { x: 50, y: 200 },
     velocity: { x: 0, y: 0 },
     aceleration: { x: 0, y: 0 },
@@ -75,7 +76,7 @@ export class SimulationStore {
     mass: 800,
     width: 44,
     height: 22
-  };
+  });
 
   // State history buffer for timeline scrubbing
   history = $state<{ vehicle: Vehicle; time: number }[]>([]);
@@ -97,17 +98,20 @@ export class SimulationStore {
     // Find perfect Y-coordinate start to snap vehicle to terrain segment at x=50
     const startSegments = this.segments;
     let initialY = 200;
-    const seg = startSegments.find(s => 50 >= s.start.x && 50 <= s.end.x);
+    const startX = Math.max(0, Math.min(this.canvasWidth, this.initialVehicleState.position.x));
+    const seg = startSegments.find(s => startX >= s.start.x && startX <= s.end.x);
     if (seg) {
       const dx = seg.end.x - seg.start.x;
-      const t = (50 - seg.start.x) / (dx || 1);
+      const t = (startX - seg.start.x) / (dx || 1);
       const height = seg.start.y + (seg.end.y - seg.start.y) * t;
       initialY = height - this.initialVehicleState.height / 2 - 4;
+    } else {
+      initialY = this.initialVehicleState.position.y;
     }
 
     this.vehicle = createVehicle({
       ...this.initialVehicleState,
-      position: { x: 50, y: initialY }
+      position: { x: startX, y: initialY }
     });
 
     // Reset history to Frame 0
@@ -336,6 +340,16 @@ export class SimulationStore {
     ];
     this.selectedPointIndex = null;
     this.selectedSegmentIndex = null;
+    this.resetSimulation();
+  }
+
+  setInitialVehiclePosition(x: number, y: number) {
+    const clampedX = Math.max(0, Math.min(this.canvasWidth, x));
+    const clampedY = Math.max(this.minTerrainY, Math.min(this.floorLimitY, y));
+    this.initialVehicleState = {
+      ...this.initialVehicleState,
+      position: { x: clampedX, y: clampedY }
+    };
     this.resetSimulation();
   }
 }

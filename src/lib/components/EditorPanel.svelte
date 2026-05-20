@@ -39,6 +39,22 @@
     if (Number.isNaN(value)) return;
     sim.config = { ...sim.config, [key]: value };
   }
+
+  function updateInitialX(e: Event) {
+    const value = parseFloat((e.target as HTMLInputElement).value);
+    if (Number.isNaN(value)) return;
+    sim.setInitialVehiclePosition(value, sim.initialVehicleState.position.y);
+  }
+
+  function updateInitialY(e: Event) {
+    const value = parseFloat((e.target as HTMLInputElement).value);
+    if (Number.isNaN(value)) return;
+    sim.setInitialVehiclePosition(sim.initialVehicleState.position.x, value);
+  }
+
+  function toggleStartPositionEditMode() {
+    sim.startPositionEditMode = !sim.startPositionEditMode;
+  }
 </script>
 
 <aside class="w-full xl:w-[260px] shrink-0 bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4">
@@ -94,6 +110,50 @@
   </div>
 
   <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-1.5">
+      <button
+        onclick={toggleStartPositionEditMode}
+        class="w-full px-3 py-2 rounded-lg border text-sm font-semibold transition-colors cursor-pointer
+          {sim.startPositionEditMode
+            ? 'bg-cyan-600 text-white border-cyan-700'
+            : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'}"
+      >
+        {sim.startPositionEditMode ? 'Modo mover inicio: ACTIVO' : 'Modo mover inicio: INACTIVO'}
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+        <span>Posición inicial X</span>
+        <span class="font-mono text-slate-800">{sim.initialVehicleState.position.x.toFixed(0)} px</span>
+      </div>
+      <input
+        type="number"
+        min="0"
+        max="1400"
+        step="1"
+        value={sim.initialVehicleState.position.x}
+        oninput={updateInitialX}
+        class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+        <span>Posición inicial Y</span>
+        <span class="font-mono text-slate-800">{sim.initialVehicleState.position.y.toFixed(0)} px</span>
+      </div>
+      <input
+        type="number"
+        min="0"
+        max="510"
+        step="1"
+        value={sim.initialVehicleState.position.y}
+        oninput={updateInitialY}
+        class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
+      />
+    </div>
+
     <div class="flex flex-col gap-1.5">
       <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
         <span>Peso (masa)</span>

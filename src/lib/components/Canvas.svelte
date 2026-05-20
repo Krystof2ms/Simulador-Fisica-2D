@@ -8,6 +8,7 @@
   let isDragging = false;
   let dragPointIndex: number | null = null;
   let isPainting = false;
+  let isDraggingStartPosition = false;
 
   // Particle system for vehicle wheel dust
   type Particle = {
@@ -104,6 +105,11 @@
 
   function handleMouseDown(e: MouseEvent) {
     const coords = getMouseCoords(e);
+    if (sim.startPositionEditMode) {
+      isDraggingStartPosition = true;
+      sim.setInitialVehiclePosition(coords.x, coords.y);
+      return;
+    }
 
     if (sim.activeTool === 'points') {
       const index = getPointNear(coords);
@@ -131,6 +137,10 @@
 
   function handleMouseMove(e: MouseEvent) {
     const coords = getMouseCoords(e);
+    if (sim.startPositionEditMode && isDraggingStartPosition) {
+      sim.setInitialVehiclePosition(coords.x, coords.y);
+      return;
+    }
 
     // Update hovers
     if (sim.activeTool === 'points') {
@@ -155,6 +165,7 @@
     isDragging = false;
     dragPointIndex = null;
     isPainting = false;
+    isDraggingStartPosition = false;
   }
 
   function handleDoubleClick(e: MouseEvent) {
@@ -333,6 +344,22 @@
       c.fill();
     }
     c.globalAlpha = 1.0; // reset alpha
+
+    if (sim.startPositionEditMode) {
+      const startPos = sim.initialVehicleState.position;
+      c.save();
+      c.strokeStyle = '#0891b2';
+      c.fillStyle = 'rgba(8, 145, 178, 0.15)';
+      c.lineWidth = 2;
+      c.beginPath();
+      c.arc(startPos.x, startPos.y, 14, 0, Math.PI * 2);
+      c.fill();
+      c.stroke();
+      c.font = '700 11px ui-monospace, SFMono-Regular, Menlo, monospace';
+      c.fillStyle = '#0e7490';
+      c.fillText('INICIO', startPos.x, startPos.y - 18);
+      c.restore();
+    }
 
     // Draw the Interactive Terrain Vértices Handles
     if (sim.activeTool === 'points' || sim.activeTool === 'friction') {
