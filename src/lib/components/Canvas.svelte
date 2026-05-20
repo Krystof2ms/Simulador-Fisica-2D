@@ -217,8 +217,8 @@
   });
 </script>
 
-<div class="relative w-full overflow-hidden select-none">
-  <div class="ml-6 mt-6 relative w-full h-[calc(100vh-280px)] min-h-[400px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner flex justify-center items-center p-2">
+<div class="relative w-full h-full overflow-hidden select-none flex flex-col">
+  <div class="relative flex-1 min-h-0 w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner flex justify-center items-center p-2">
   <!-- Key bindings hint badge -->
   <div class="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-sm text-xs font-medium text-slate-200 shadow border border-slate-700/50 flex items-center gap-1.5">
     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
