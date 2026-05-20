@@ -6,6 +6,8 @@ import type { Vehicle, PointTerrain, TerrainSegment, ControlsState } from '../en
 export type ToolType = 'elevate' | 'lower' | 'smooth' | 'points' | 'friction';
 
 export class SimulationStore {
+  private readonly canvasWidth = 900;
+
   // Physical constants
   config = {
     gravity: 9.8 * 30, // scaled for canvas height
@@ -125,6 +127,22 @@ export class SimulationStore {
     const nextState = fixedUpdate(engineState, dt);
     this.vehicle = nextState.vehicle;
     this.time = nextState.time;
+
+    const halfWidth = this.vehicle.width / 2;
+    const leftLimit = halfWidth;
+    const rightLimit = this.canvasWidth - halfWidth;
+    if (this.vehicle.position.x <= leftLimit || this.vehicle.position.x >= rightLimit) {
+      this.vehicle = {
+        ...this.vehicle,
+        position: {
+          x: Math.max(leftLimit, Math.min(rightLimit, this.vehicle.position.x)),
+          y: this.vehicle.position.y
+        },
+        velocity: { ...this.vehicle.velocity, x: 0 },
+        aceleration: { ...this.vehicle.aceleration, x: 0 }
+      };
+      this.isPlaying = false;
+    }
 
     // Save to scrubbing history
     this.history.push({
