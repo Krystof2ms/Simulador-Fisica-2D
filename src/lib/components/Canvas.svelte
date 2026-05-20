@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import { sim } from '../stores/simulation.svelte';
   import type { Vec2D } from '../engine/types';
+  // import HorizontalRuler from './HorizontalRuler.svelte';
+  // import VerticalRuler from './VerticalRuler.svelte';
 
   let canvasElement: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D | null = null;
@@ -25,6 +27,7 @@
   // Dimensions
   let width = 1400;
   let height = 760;
+  const rulerStep = 100;
 
   // Camera horizontal offset (fixed viewport)
   let cameraX = 0;
@@ -33,6 +36,10 @@
   let wheelRotation = 0;
 
   function spawnDust(x: number, y: number, isSlippery: boolean) {
+    if (particles.length > 450) {
+      particles.splice(0, particles.length - 450);
+    }
+
     const count = isSlippery ? 3 : 1;
     for (let i = 0; i < count; i++) {
       particles.push({
@@ -78,13 +85,13 @@
       // Distance from point to line segment
       const l2 = Math.pow(seg.end.x - seg.start.x, 2) + Math.pow(seg.end.y - seg.start.y, 2);
       if (l2 === 0) continue;
-      
+
       let t = ((coords.x - seg.start.x) * (seg.end.x - seg.start.x) + (coords.y - seg.start.y) * (seg.end.y - seg.start.y)) / l2;
       t = Math.max(0, Math.min(1, t));
-      
+
       const projX = seg.start.x + t * (seg.end.x - seg.start.x);
       const projY = seg.start.y + t * (seg.end.y - seg.start.y);
-      
+
       const dist = Math.hypot(coords.x - projX, coords.y - projY);
       if (dist < maxDist && coords.x >= seg.start.x && coords.x <= seg.end.x) {
         return i;
@@ -196,11 +203,11 @@
 
   // Svelte 5 engine loop update synchronizer
   let animationFrameId: number;
-  
+
   function draw() {
     const c = ctx;
     if (!c) return;
-    
+
     // Fixed camera: no horizontal follow
     cameraX = 0;
 
@@ -285,7 +292,7 @@
         // Sticky/Rough (f >= 1.2): Warm red/orange
         let color = '#0ea5e9'; // standard sky blue fallback
         let strokeWidth = 3;
-        
+
         if (f < 0.25) {
           color = '#38bdf8'; // icy sky-cyan
           strokeWidth = 5;
@@ -313,7 +320,7 @@
           c.moveTo(seg.start.x, seg.start.y);
           c.lineTo(seg.end.x, seg.end.y);
           c.stroke();
-          
+
           c.strokeStyle = '#f43f5e'; // red border
           c.lineWidth = strokeWidth + 1.5;
           c.stroke();
@@ -488,13 +495,13 @@
     c.restore(); // end vehicle context
 
     // Trigger tyre dust particles when moving and grounded
-    if (veh.groundedSurface && Math.abs(veh.velocity.x) > 0.4) {
+    if (sim.isPlaying && veh.groundedSurface && Math.abs(veh.velocity.x) > 0.4) {
       // Find absolute position of the back tyre
       const absRearWheel = {
         x: veh.position.x + (-veh.width / 3.2) * Math.cos(veh.angle) - (veh.height / 2.2) * Math.sin(veh.angle),
         y: veh.position.y + (-veh.width / 3.2) * Math.sin(veh.angle) + (veh.height / 2.2) * Math.cos(veh.angle)
       };
-      
+
       const isIce = veh.groundedSurface.segment.friction < 0.25;
       if (Math.random() < 0.45) {
         spawnDust(absRearWheel.x, absRearWheel.y, isIce);
@@ -518,7 +525,7 @@
   function setupKeyboard(e: KeyboardEvent, pressed: boolean) {
     if (['ArrowLeft', 'ArrowRight', 'ArrowDown', 'KeyA', 'KeyD', 'KeyS'].includes(e.code)) {
       e.preventDefault();
-      
+
       let nextThrottle = sim.controls.throttle;
       let nextBrake = sim.controls.brake;
 
@@ -536,7 +543,7 @@
 
   onMount(() => {
     ctx = canvasElement.getContext('2d');
-    
+
     // Start continuous requestAnimationFrame draw loop
     draw();
 
@@ -557,7 +564,15 @@
   });
 </script>
 
-<div class="relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner select-none flex justify-center items-center p-2">
+<div class="relative w-full select-none">
+  <!--
+  <HorizontalRuler {width} step={rulerStep} />
+  <VerticalRuler {height} step={rulerStep} />
+
+  <div class="absolute left-0 top-0 z-40 w-6 h-6 rounded-tl-lg border border-slate-300 bg-slate-200"></div>
+  -->
+
+  <div class="ml-6 mt-6 relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner flex justify-center items-center p-2">
   <!-- Key bindings hint badge -->
   <div class="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-sm text-xs font-medium text-slate-200 shadow border border-slate-700/50 flex items-center gap-1.5">
     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -581,4 +596,5 @@
     ondblclick={handleDoubleClick}
     class="block bg-transparent w-full h-auto cursor-crosshair rounded-xl"
   ></canvas>
+</div>
 </div>

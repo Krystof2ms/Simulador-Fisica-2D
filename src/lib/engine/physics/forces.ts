@@ -11,14 +11,15 @@ export type ForceParams = {
 };
 
 export function computeAcceleration(vehicle: Vehicle, params: ForceParams, time: number): Vec2D {
-  let tractionLimit = params.maxDriveForce;
+  let tractionLimit = Number.POSITIVE_INFINITY;
   let slopeGravityX = 0;
 
   if (vehicle.groundedSurface) {
     const f = vehicle.groundedSurface.segment.friction;
     const normalForce = vehicle.mass * params.gravity;
     // Traction from weight over terrain: F_max = mu * N
-    tractionLimit = Math.max(0, Math.min(params.maxDriveForce, f * normalForce));
+    // If traction is very low, propulsion still works (thruster-like behavior).
+    tractionLimit = Math.max(0, f * normalForce);
 
     const angle = vehicle.groundedSurface.angle;
     slopeGravityX = params.gravity * Math.sin(angle);
@@ -28,7 +29,8 @@ export function computeAcceleration(vehicle: Vehicle, params: ForceParams, time:
   const rawPropulsion = params.propulsionForce + oscillation;
   const dropDenominator = 1 + Math.max(0, params.propulsionDropFactor) * Math.abs(vehicle.velocity.x);
   const propulsion = rawPropulsion / dropDenominator;
-  const drive = Math.max(-tractionLimit, Math.min(tractionLimit, propulsion));
+  const tractionDrive = Math.max(-tractionLimit, Math.min(tractionLimit, propulsion));
+  const drive = tractionLimit > 0 ? tractionDrive : propulsion;
   const drag = vehicle.velocity.x * params.drag;
 
   return {

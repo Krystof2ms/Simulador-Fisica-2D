@@ -36,6 +36,7 @@
 
   function setTool(toolId: ToolType) {
     sim.activeTool = toolId;
+    sim.startPositionEditMode = false;
   }
 </script>
 
@@ -59,6 +60,21 @@
           <span>{tool.label}</span>
         </button>
       {/each}
+
+      <button
+        onclick={() => (sim.startPositionEditMode = !sim.startPositionEditMode)}
+        class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {
+          sim.startPositionEditMode
+            ? 'bg-cyan-600 text-white shadow-md scale-[1.02]'
+            : 'text-slate-600 hover:bg-slate-200 hover:text-slate-800'
+        }"
+        title="Activa arrastre del punto de inicio del móvil"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4m5-5l-5 5 5 5m6-10l5 5-5 5" />
+        </svg>
+        <span>Mover inicio</span>
+      </button>
     </div>
 
     <!-- Right: Quick actions -->
