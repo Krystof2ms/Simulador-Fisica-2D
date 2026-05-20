@@ -94,8 +94,10 @@
 
   function getMouseCoords(e: MouseEvent): Vec2D {
     const rect = canvasElement.getBoundingClientRect();
-    const localX = e.clientX - rect.left;
-    const localY = e.clientY - rect.top;
+    const scaleX = width / rect.width;
+    const scaleY = height / rect.height;
+    const localX = (e.clientX - rect.left) * scaleX;
+    const localY = (e.clientY - rect.top) * scaleY;
     // Map local X to world coordinates by adding camera position
     return { x: localX + cameraX, y: localY };
   }

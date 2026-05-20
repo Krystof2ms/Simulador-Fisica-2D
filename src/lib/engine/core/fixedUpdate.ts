@@ -12,6 +12,7 @@ export function fixedUpdate(state: EngineState, dt = state.config.fixedDt): Engi
     propulsionForce: state.config.propulsionForce,
     propulsionOscillation: state.config.propulsionOscillation,
     propulsionFrequencyHz: state.config.propulsionFrequencyHz,
+    propulsionDropFactor: state.config.propulsionDropFactor,
     drag: state.config.drag
   }, state.time);
 

@@ -6,6 +6,7 @@ export type EngineConfig = {
   propulsionForce: number;
   propulsionOscillation: number;
   propulsionFrequencyHz: number;
+  propulsionDropFactor: number;
   drag: number;
   friction: number;
   fixedDt: number;

@@ -17,6 +17,7 @@ export class SimulationStore {
     propulsionForce: 900,
     propulsionOscillation: 250,
     propulsionFrequencyHz: 0.6,
+    propulsionDropFactor: 0.004,
     drag: 0.1,
     friction: 0.9,
     fixedDt: 1 / 60,
