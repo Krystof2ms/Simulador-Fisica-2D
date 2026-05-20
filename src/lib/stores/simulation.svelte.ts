@@ -6,7 +6,7 @@ import type { Vehicle, PointTerrain, TerrainSegment, ControlsState } from '../en
 export type ToolType = 'elevate' | 'lower' | 'smooth' | 'points' | 'friction';
 
 export class SimulationStore {
-  private readonly canvasWidth = 900;
+  private readonly canvasWidth = 1400;
   private readonly floorLimitY = 510;
   private readonly minTerrainY = 0;
 
@@ -38,14 +38,14 @@ export class SimulationStore {
   // Editable Terrain Points
   terrainPoints = $state<PointTerrain[]>([
     { x: 0, y: 360, friction: 0.9 },
-    { x: 120, y: 360, friction: 0.9 },
-    { x: 240, y: 360, friction: 0.9 },
-    { x: 360, y: 360, friction: 0.9 },
-    { x: 480, y: 360, friction: 0.9 },
-    { x: 600, y: 360, friction: 0.9 },
-    { x: 720, y: 360, friction: 0.9 },
-    { x: 840, y: 360, friction: 0.9 },
-    { x: 900, y: 360, friction: 0.9 }
+    { x: 175, y: 360, friction: 0.9 },
+    { x: 350, y: 360, friction: 0.9 },
+    { x: 525, y: 360, friction: 0.9 },
+    { x: 700, y: 360, friction: 0.9 },
+    { x: 875, y: 360, friction: 0.9 },
+    { x: 1050, y: 360, friction: 0.9 },
+    { x: 1225, y: 360, friction: 0.9 },
+    { x: 1400, y: 360, friction: 0.9 }
   ]);
 
   // Derived Segments
@@ -324,14 +324,14 @@ export class SimulationStore {
   resetTerrainToDefault() {
     this.terrainPoints = [
       { x: 0, y: 360, friction: 0.9 },
-      { x: 120, y: 360, friction: 0.9 },
-      { x: 240, y: 360, friction: 0.9 },
-      { x: 360, y: 360, friction: 0.9 },
-      { x: 480, y: 360, friction: 0.9 },
-      { x: 600, y: 360, friction: 0.9 },
-      { x: 720, y: 360, friction: 0.9 },
-      { x: 840, y: 360, friction: 0.9 },
-      { x: 900, y: 360, friction: 0.9 }
+      { x: 175, y: 360, friction: 0.9 },
+      { x: 350, y: 360, friction: 0.9 },
+      { x: 525, y: 360, friction: 0.9 },
+      { x: 700, y: 360, friction: 0.9 },
+      { x: 875, y: 360, friction: 0.9 },
+      { x: 1050, y: 360, friction: 0.9 },
+      { x: 1225, y: 360, friction: 0.9 },
+      { x: 1400, y: 360, friction: 0.9 }
     ];
     this.selectedPointIndex = null;
     this.selectedSegmentIndex = null;

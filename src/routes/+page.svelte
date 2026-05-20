@@ -1,5 +1,6 @@
 <script lang="ts">
   import Toolbar from "$lib/components/Toolbar.svelte";
+  import EditorPanel from "$lib/components/EditorPanel.svelte";
   import Canvas from "$lib/components/Canvas.svelte";
   import Controls from "$lib/components/Controls.svelte";
   import Stats from "$lib/components/Stats.svelte";
@@ -33,11 +34,11 @@
 </svelte:head>
 
 <main
-  class="min-h-screen w-full bg-slate-50/60 p-4 md:p-6 flex flex-col items-center justify-start antialiased font-sans select-none"
+  class="min-h-screen w-full bg-slate-50/60 p-2 md:p-3 flex flex-col items-center justify-start antialiased font-sans select-none"
 >
   <!-- Header Bar -->
   <header
-    class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-white/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300"
+    class="w-full flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-white/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300"
   >
     <div class="flex items-center gap-3.5">
       <!-- Logo vehicle badge -->
@@ -93,9 +94,11 @@
 
   <!-- Interactive Simulator Section -->
   <section
-    class="w-full max-w-7xl flex flex-col md:flex-row items-stretch justify-center gap-5 transition-all duration-300 relative"
+    class="w-full flex flex-col xl:flex-row items-stretch justify-center gap-5 transition-all duration-300 relative"
   >
-    <!-- Left Workspace (Toolbar, Canvas, Controls) -->
+    <EditorPanel />
+
+    <!-- Center Workspace (Toolbar, Canvas, Controls) -->
     <div class="flex-1 flex flex-col gap-4 min-w-[300px]">
       <!-- Toolbar -->
       <Toolbar />

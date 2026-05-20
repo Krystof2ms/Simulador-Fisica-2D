@@ -34,33 +34,8 @@
     }
   ];
 
-  const presets = [
-    { name: 'Hielo', value: 0.1, color: 'bg-sky-400 text-sky-950 border-sky-300' },
-    { name: 'Lodo', value: 0.4, color: 'bg-slate-400 text-slate-900 border-slate-300' },
-    { name: 'Tierra', value: 0.9, color: 'bg-emerald-600 text-white border-emerald-500' },
-    { name: 'Asfalto', value: 1.6, color: 'bg-orange-600 text-white border-orange-500' }
-  ];
-
   function setTool(toolId: ToolType) {
     sim.activeTool = toolId;
-  }
-
-  function handleFrictionSlider(e: Event) {
-    if (sim.selectedSegmentIndex === null) return;
-    const value = parseFloat((e.target as HTMLInputElement).value);
-    sim.updateSegmentFriction(sim.selectedSegmentIndex, value);
-  }
-
-  function applyPreset(value: number) {
-    if (sim.selectedSegmentIndex === null) return;
-    sim.updateSegmentFriction(sim.selectedSegmentIndex, value);
-  }
-
-  function handleAngleInput(e: Event) {
-    if (sim.selectedSegmentIndex === null) return;
-    const value = parseFloat((e.target as HTMLInputElement).value);
-    if (Number.isNaN(value)) return;
-    sim.setSegmentAngleDegrees(sim.selectedSegmentIndex, value);
   }
 </script>
 
@@ -108,83 +83,4 @@
     <span>{tools.find(t => t.id === sim.activeTool)?.desc}</span>
   </div>
 
-  <!-- Bottom slide-in section for segment friction customization -->
-  {#if sim.selectedSegmentIndex !== null}
-    {@const activeFriction = sim.segments[sim.selectedSegmentIndex]?.friction ?? 0.9}
-    {@const activeAngleDeg = sim.getSegmentAngleDegrees(sim.selectedSegmentIndex) ?? 0}
-    <div
-      class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-slate-200 bg-slate-50/80 animate-in fade-in slide-in-from-top-2 duration-300"
-    >
-      <div class="flex items-center gap-3">
-        <div class="p-2 rounded-lg bg-slate-900 text-white font-bold text-xs shadow-sm">
-          Sección {sim.selectedSegmentIndex + 1}
-        </div>
-        <div class="flex flex-col">
-          <span class="text-xs font-semibold text-slate-500">Coeficiente de Fricción</span>
-          <span class="text-sm font-bold text-slate-800 font-mono">{activeFriction.toFixed(2)} μ</span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-xs font-semibold text-slate-500">Ángulo con eje X</span>
-          <span class="text-sm font-bold text-slate-800 font-mono">
-            {activeAngleDeg.toFixed(1)}° {activeAngleDeg > 0 ? '↗ Ascendente' : activeAngleDeg < 0 ? '↘ Descendente' : '→ Plano'}
-          </span>
-        </div>
-      </div>
-
-      <!-- Friction slider -->
-      <div class="flex-1 max-w-md flex items-center gap-3">
-        <span class="text-xs text-slate-400 font-bold font-mono">0.0 (Hielo)</span>
-        <input
-          type="range"
-          min="0.0"
-          max="2.0"
-          step="0.05"
-          value={activeFriction}
-          oninput={handleFrictionSlider}
-          class="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-ew-resize accent-slate-900 focus:outline-none"
-        />
-        <span class="text-xs text-slate-400 font-bold font-mono">2.0 (Rugoso)</span>
-      </div>
-
-      <!-- Preset Buttons -->
-      <div class="flex items-center gap-2.5">
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Presets:</span>
-        <div class="flex gap-1.5">
-          {#each presets as pr}
-            <button
-              onclick={() => applyPreset(pr.value)}
-              class="px-2.5 py-1 text-xs font-bold border rounded-lg shadow-sm cursor-pointer transition-transform hover:scale-[1.04] active:scale-[0.98] {pr.color} {
-                Math.abs(activeFriction - pr.value) < 0.01 ? 'ring-2 ring-slate-900 ring-offset-1' : ''
-              }"
-            >
-              {pr.name}
-            </button>
-          {/each}
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <span class="text-xs font-bold text-slate-500">Ángulo (°)</span>
-        <input
-          type="number"
-          min="-80"
-          max="80"
-          step="0.5"
-          value={activeAngleDeg.toFixed(1)}
-          oninput={handleAngleInput}
-          class="w-24 px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300"
-          title="Ajusta el ángulo del segmento; se mueve el punto anterior."
-        />
-      </div>
-    </div>
-  {:else if sim.activeTool === 'friction'}
-    <div
-      class="p-3.5 rounded-xl border border-slate-200 bg-sky-50 text-sky-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in duration-300"
-    >
-      <svg class="w-4 h-4 text-sky-600 shrink-0 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.011 12H9M12 9v6m-9-3c0 4.97 4.03 9 9 9s9-4.03 9-9-4.03-9-9-9-9 4.03-9 9z"/>
-      </svg>
-      <span>Pincha sobre cualquier línea del relieve en el Canvas para configurar o aplicar presets de fricción a esa sección de terreno.</span>
-    </div>
-  {/if}
 </div>

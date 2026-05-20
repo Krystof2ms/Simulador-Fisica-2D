@@ -22,8 +22,8 @@
   let particles: Particle[] = [];
 
   // Dimensions
-  let width = 900;
-  let height = 550;
+  let width = 1400;
+  let height = 760;
 
   // Camera horizontal offset (fixed viewport)
   let cameraX = 0;
@@ -550,6 +550,6 @@
     onmouseup={handleMouseUp}
     onmouseleave={handleMouseUp}
     ondblclick={handleDoubleClick}
-    class="block bg-transparent max-w-full h-auto cursor-crosshair rounded-xl"
+    class="block bg-transparent w-full h-auto cursor-crosshair rounded-xl"
   ></canvas>
 </div>
