@@ -55,6 +55,13 @@
     if (sim.selectedSegmentIndex === null) return;
     sim.updateSegmentFriction(sim.selectedSegmentIndex, value);
   }
+
+  function handleAngleInput(e: Event) {
+    if (sim.selectedSegmentIndex === null) return;
+    const value = parseFloat((e.target as HTMLInputElement).value);
+    if (Number.isNaN(value)) return;
+    sim.setSegmentAngleDegrees(sim.selectedSegmentIndex, value);
+  }
 </script>
 
 <div class="w-full flex flex-col gap-4 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300">
@@ -104,6 +111,7 @@
   <!-- Bottom slide-in section for segment friction customization -->
   {#if sim.selectedSegmentIndex !== null}
     {@const activeFriction = sim.segments[sim.selectedSegmentIndex]?.friction ?? 0.9}
+    {@const activeAngleDeg = sim.getSegmentAngleDegrees(sim.selectedSegmentIndex) ?? 0}
     <div
       class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-slate-200 bg-slate-50/80 animate-in fade-in slide-in-from-top-2 duration-300"
     >
@@ -114,6 +122,12 @@
         <div class="flex flex-col">
           <span class="text-xs font-semibold text-slate-500">Coeficiente de Fricción</span>
           <span class="text-sm font-bold text-slate-800 font-mono">{activeFriction.toFixed(2)} μ</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-slate-500">Ángulo con eje X</span>
+          <span class="text-sm font-bold text-slate-800 font-mono">
+            {activeAngleDeg.toFixed(1)}° {activeAngleDeg > 0 ? '↗ Ascendente' : activeAngleDeg < 0 ? '↘ Descendente' : '→ Plano'}
+          </span>
         </div>
       </div>
 
@@ -147,6 +161,20 @@
             </button>
           {/each}
         </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold text-slate-500">Ángulo (°)</span>
+        <input
+          type="number"
+          min="-80"
+          max="80"
+          step="0.5"
+          value={activeAngleDeg.toFixed(1)}
+          oninput={handleAngleInput}
+          class="w-24 px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300"
+          title="Ajusta el ángulo del segmento; se mueve el punto anterior."
+        />
       </div>
     </div>
   {:else if sim.activeTool === 'friction'}

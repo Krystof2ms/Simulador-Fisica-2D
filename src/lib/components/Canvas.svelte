@@ -257,6 +257,9 @@
       for (let i = 0; i < segments.length; i++) {
         const seg = segments[i];
         const f = seg.friction;
+        const angleDeg = sim.getSegmentAngleDegrees(i) ?? 0;
+        const midX = (seg.start.x + seg.end.x) / 2;
+        const midY = (seg.start.y + seg.end.y) / 2;
 
         c.beginPath();
         c.moveTo(seg.start.x, seg.start.y);
@@ -306,6 +309,16 @@
           c.lineWidth = strokeWidth + 3;
           c.stroke();
         }
+
+        c.save();
+        c.font = '600 11px ui-monospace, SFMono-Regular, Menlo, monospace';
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        const label = `${angleDeg >= 0 ? '+' : ''}${angleDeg.toFixed(1)}°`;
+        const isSelected = sim.selectedSegmentIndex === i;
+        c.fillStyle = isSelected ? '#0f172a' : 'rgba(15, 23, 42, 0.72)';
+        c.fillText(label, midX, midY - 14);
+        c.restore();
       }
     }
 

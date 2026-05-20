@@ -7,6 +7,8 @@ export type ToolType = 'elevate' | 'lower' | 'smooth' | 'points' | 'friction';
 
 export class SimulationStore {
   private readonly canvasWidth = 900;
+  private readonly floorLimitY = 510;
+  private readonly minTerrainY = 0;
 
   // Physical constants
   config = {
@@ -88,6 +90,10 @@ export class SimulationStore {
     this.isPlaying = false;
     this.time = 0;
     this.controls = { throttle: 0, brake: 0 };
+    this.terrainPoints = this.terrainPoints.map((p) => ({
+      ...p,
+      y: Math.min(this.floorLimitY, Math.max(0, p.y))
+    }));
     
     // Find perfect Y-coordinate start to snap vehicle to terrain segment at x=50
     const startSegments = this.segments;
@@ -187,20 +193,53 @@ export class SimulationStore {
     // Maintain x-ordering
     const minX = index > 0 ? this.terrainPoints[index - 1].x + 10 : 0;
     const maxX = index < this.terrainPoints.length - 1 ? this.terrainPoints[index + 1].x - 10 : 2000;
-    
-    const clampedX = index === 0 ? 0 : Math.max(minX, Math.min(maxX, x));
+    const isEdgePoint = index === 0 || index === this.terrainPoints.length - 1;
+    const clampedX = isEdgePoint
+      ? this.terrainPoints[index].x
+      : Math.max(minX, Math.min(maxX, x));
     
     this.terrainPoints[index] = {
       ...this.terrainPoints[index],
       x: clampedX,
-      y
+      y: Math.min(this.floorLimitY, Math.max(this.minTerrainY, y))
     };
     
     this.resetSimulation();
   }
 
+  getSegmentAngleDegrees(index: number): number | null {
+    if (index < 0 || index >= this.terrainPoints.length - 1) return null;
+    const start = this.terrainPoints[index];
+    const end = this.terrainPoints[index + 1];
+    const dx = end.x - start.x;
+    if (Math.abs(dx) < 1e-9) return 0;
+    const radians = Math.atan2(-(end.y - start.y), dx);
+    return (radians * 180) / Math.PI;
+  }
+
+  setSegmentAngleDegrees(index: number, angleDeg: number) {
+    if (index < 0 || index >= this.terrainPoints.length - 1) return;
+
+    const end = this.terrainPoints[index + 1];
+    const start = this.terrainPoints[index];
+    const dx = end.x - start.x;
+    if (Math.abs(dx) < 1e-9) return;
+
+    const radians = (angleDeg * Math.PI) / 180;
+    const rawStartY = end.y + Math.tan(radians) * dx;
+    const clampedStartY = Math.min(this.floorLimitY, Math.max(this.minTerrainY, rawStartY));
+
+    this.terrainPoints[index] = {
+      ...start,
+      y: clampedStartY
+    };
+
+    this.resetSimulation();
+  }
+
   // Double click to add a point
   addPoint(x: number, y: number) {
+    const clampedY = Math.min(this.floorLimitY, Math.max(0, y));
     let insertIndex = -1;
     for (let i = 0; i < this.terrainPoints.length; i++) {
       if (this.terrainPoints[i].x > x) {
@@ -210,10 +249,10 @@ export class SimulationStore {
     }
 
     if (insertIndex === -1) {
-      this.terrainPoints.push({ x, y, friction: 0.9 });
+      this.terrainPoints.push({ x, y: clampedY, friction: 0.9 });
     } else {
       const prevFriction = this.terrainPoints[insertIndex - 1]?.friction ?? 0.9;
-      this.terrainPoints.splice(insertIndex, 0, { x, y, friction: prevFriction });
+      this.terrainPoints.splice(insertIndex, 0, { x, y: clampedY, friction: prevFriction });
     }
 
     this.resetSimulation();
@@ -260,7 +299,7 @@ export class SimulationStore {
       const dist = Math.abs(p.x - centerX);
       if (dist < radius) {
         const factor = (1 - dist / radius);
-        return { ...p, y: Math.min(550, p.y + strength * factor * 10) };
+        return { ...p, y: Math.min(this.floorLimitY, p.y + strength * factor * 10) };
       }
       return p;
     });
