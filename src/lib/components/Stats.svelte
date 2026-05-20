@@ -1,5 +1,6 @@
 <script lang="ts">
   import { sim } from '../stores/simulation.svelte';
+  import SeriesUPlot from './SeriesUPlot.svelte';
 
   interface Props {
     isDocked: boolean;
@@ -31,35 +32,9 @@
     sim.vehicle.groundedSurface ? sim.vehicle.groundedSurface.segment.friction.toFixed(2) : 'N/A (Aire)'
   );
 
-  const seriesMetrics = $derived.by(() => {
-    if (sim.history.length === 0) {
-      return { path: '', maxVal: 1, title: 'Velocidad / Tiempo', unit: 'm/s' };
-    }
-
-    const first = sim.history[0];
-    const values = sim.history.map((h) => {
-      if (seriesMode === 'dist') return (h.vehicle.position.x - first.vehicle.position.x) / SCALE;
-      if (seriesMode === 'acc') return Math.hypot(h.vehicle.aceleration.x, h.vehicle.aceleration.y) / SCALE;
-      return Math.hypot(h.vehicle.velocity.x, h.vehicle.velocity.y) / SCALE;
-    });
-
-    const maxVal = Math.max(...values, 1);
-    const canvasW = 260;
-    const canvasH = 140;
-
-    const points = values.map((value, i) => {
-      const x = (i / (sim.maxTime / sim.config.fixedDt)) * canvasW;
-      const y = canvasH - (value / (maxVal * 1.25)) * canvasH;
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    });
-
-    return {
-      path: `M ${points.join(' L ')}`,
-      maxVal,
-      title: seriesMode === 'dist' ? 'Distancia / Tiempo' : seriesMode === 'acc' ? 'Aceleración / Tiempo' : 'Velocidad / Tiempo',
-      unit: seriesMode === 'dist' ? 'm' : seriesMode === 'acc' ? 'm/s²' : 'm/s'
-    };
-  });
+  const seriesTitle = $derived(
+    seriesMode === 'dist' ? 'Distancia / Tiempo' : seriesMode === 'acc' ? 'Aceleración / Tiempo' : 'Velocidad / Tiempo'
+  );
 
   function toggleCollapse() {
     isCollapsed = !isCollapsed;
@@ -68,11 +43,15 @@
   function toggleDock() {
     isDocked = !isDocked;
   }
+
+  function setSeriesMode(mode: 'dist' | 'vel' | 'acc') {
+    seriesMode = mode;
+  }
 </script>
 
 <div
   class="relative h-190 flex items-stretch transition-all duration-300 ease-out select-none {
-    isCollapsed ? 'w-0' : 'w-90'
+    isCollapsed ? 'w-0' : 'w-[430px]'
   } {
     !isDocked && !isCollapsed ? 'absolute top-0 right-2 z-20 drop-shadow-2xl' : ''
   }"
@@ -90,7 +69,7 @@
   </button>
 
   {#if !isCollapsed}
-    <div class="w-90 bg-white border border-slate-200 rounded-2xl flex flex-col items-stretch shadow-lg overflow-hidden animate-in fade-in slide-in-from-right-4 duration-300">
+    <div class="w-[430px] bg-white border border-slate-200 rounded-2xl flex flex-col items-stretch shadow-lg overflow-hidden animate-in fade-in slide-in-from-right-4 duration-300">
       <div class="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50">
         <div class="flex flex-col">
           <span class="text-xs font-bold text-slate-400 uppercase tracking-widest leading-none">Telemetría</span>
@@ -149,37 +128,31 @@
           </div>
         {:else}
           <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-semibold">
-            <button onclick={() => (seriesMode = 'dist')} class="px-2 py-1 rounded-md {seriesMode === 'dist' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}">Dist/Tiempo</button>
-            <button onclick={() => (seriesMode = 'vel')} class="px-2 py-1 rounded-md {seriesMode === 'vel' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}">Vel/Tiempo</button>
-            <button onclick={() => (seriesMode = 'acc')} class="px-2 py-1 rounded-md {seriesMode === 'acc' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}">Acc/Tiempo</button>
+            <button
+              type="button"
+              onclick={() => setSeriesMode('dist')}
+              class="px-2 py-1 rounded-md transition-colors cursor-pointer {seriesMode === 'dist' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:bg-slate-200 hover:text-slate-700'}"
+            >Dist/Tiempo</button>
+            <button
+              type="button"
+              onclick={() => setSeriesMode('vel')}
+              class="px-2 py-1 rounded-md transition-colors cursor-pointer {seriesMode === 'vel' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:bg-slate-200 hover:text-slate-700'}"
+            >Vel/Tiempo</button>
+            <button
+              type="button"
+              onclick={() => setSeriesMode('acc')}
+              class="px-2 py-1 rounded-md transition-colors cursor-pointer {seriesMode === 'acc' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:bg-slate-200 hover:text-slate-700'}"
+            >Acc/Tiempo</button>
           </div>
 
           <div class="flex-1 flex flex-col justify-between h-full py-1">
             <div class="flex flex-col">
               <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Gráfico de Serie</span>
-              <span class="text-xs text-slate-500 mt-1 leading-normal font-semibold">{seriesMetrics.title}</span>
+              <span class="text-xs text-slate-500 mt-1 leading-normal font-semibold">{seriesTitle}</span>
             </div>
 
-            <div class="w-full h-57.5 border border-slate-200 bg-slate-50 rounded-xl relative shadow-inner p-2 flex items-center justify-center mt-3">
-              {#if sim.history.length > 1}
-                <div class="absolute left-2 top-2 text-[9px] font-mono font-bold text-slate-400">{seriesMetrics.maxVal.toFixed(1)} {seriesMetrics.unit}</div>
-                <div class="absolute left-2 bottom-2 text-[9px] font-mono font-bold text-slate-400">0.0 {seriesMetrics.unit}</div>
-
-                <svg class="w-full h-full" viewBox="0 0 260 140">
-                  {#if seriesMetrics.path}
-                    <path d="{seriesMetrics.path} L 260,140 L 0,140 Z" fill="url(#areaGrad)" stroke="none" />
-                    <path d={seriesMetrics.path} fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round" />
-                  {/if}
-                  <defs>
-                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#10b981" stop-opacity="0.3" />
-                      <stop offset="100%" stop-color="#10b981" stop-opacity="0.0" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              {:else}
-                <div class="text-xs font-semibold text-slate-400 text-center px-4">Inicia la simulación para registrar y graficar series.</div>
-              {/if}
+            <div class="w-full h-[320px] border border-slate-200 bg-slate-50 rounded-xl relative shadow-inner p-2 flex items-center justify-center mt-3">
+              <SeriesUPlot history={sim.history} mode={seriesMode} scale={SCALE} width={380} height={250} />
             </div>
 
             <div class="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col gap-1.5 shadow-inner">
@@ -193,7 +166,10 @@
       </div>
 
       <div class="p-3 bg-slate-50 border-t border-slate-100 text-xs font-semibold text-slate-500 flex items-center justify-between">
-        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full {sim.isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}"></span>{sim.isPlaying ? 'Simulación Activa' : 'Simulación Pausada'}</span>
+        <span class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full {sim.isPlaying ? 'bg-emerald-500 animate-pulse' : sim.isFinished ? 'bg-indigo-500' : 'bg-slate-400'}"></span>
+          {sim.isPlaying ? 'Simulación Activa' : sim.isFinished ? 'Simulación Terminada' : 'Simulación Pausada'}
+        </span>
         <span class="font-mono text-[10px] text-slate-400 font-bold uppercase">v1.2</span>
       </div>
     </div>

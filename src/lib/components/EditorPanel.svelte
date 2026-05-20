@@ -29,7 +29,9 @@
   function updateVehicleMass(e: Event) {
     const value = parseFloat((e.target as HTMLInputElement).value);
     if (Number.isNaN(value)) return;
-    sim.vehicle = { ...sim.vehicle, mass: Math.max(50, value) };
+    const nextMass = Math.max(50, value);
+    sim.vehicle = { ...sim.vehicle, mass: nextMass };
+    sim.initialVehicleState = { ...sim.initialVehicleState, mass: nextMass };
   }
 
   function updateConfigNumber(
@@ -58,6 +60,7 @@
 </script>
 
 <aside class="w-full xl:w-[260px] shrink-0 bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4">
+  <fieldset disabled={sim.isPlaying} class="contents disabled:opacity-60">
   <div class="flex items-center justify-between">
     <h2 class="text-sm font-extrabold text-slate-800 tracking-wide uppercase">Panel de Edición</h2>
     <span class="text-[11px] font-mono text-slate-500">{sim.activeTool}</span>
@@ -249,4 +252,11 @@
       />
     </div>
   </div>
+  </fieldset>
+
+  {#if sim.isPlaying}
+    <div class="p-2 rounded-lg border border-amber-200 bg-amber-50 text-amber-800 text-xs font-semibold">
+      Edición bloqueada durante la simulación.
+    </div>
+  {/if}
 </aside>

@@ -85,9 +85,11 @@
         <span
           class="w-2 h-2 rounded-full {sim.isPlaying
             ? 'bg-emerald-500 animate-ping'
-            : 'bg-slate-400'}"
+            : sim.isFinished
+              ? 'bg-indigo-500'
+              : 'bg-slate-400'}"
         ></span>
-        <span>{sim.isPlaying ? "Simulando a 60 FPS" : "En pausa"}</span>
+        <span>{sim.isPlaying ? "Simulando a 60 FPS" : sim.isFinished ? "Simulación terminada" : "En pausa"}</span>
       </div>
     </div>
   </header>

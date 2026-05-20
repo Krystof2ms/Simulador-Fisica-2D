@@ -1,5 +1,9 @@
 <script lang="ts">
   import { sim } from '../stores/simulation.svelte';
+  const TIMELINE_MARKS = 6;
+  const timelineLabels = $derived(
+    Array.from({ length: TIMELINE_MARKS }, (_, i) => (sim.maxTime * i) / (TIMELINE_MARKS - 1))
+  );
 
   function togglePlay() {
     sim.isPlaying = !sim.isPlaying;
@@ -7,6 +11,10 @@
 
   function handleReset() {
     sim.resetSimulation();
+  }
+
+  function handleFinish() {
+    sim.finishSimulation();
   }
 
   function handleTimelineScrub(e: Event) {
@@ -51,16 +59,22 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
       </svg>
     </button>
+
+    <button
+      onclick={handleFinish}
+      class="px-3 h-10 flex items-center justify-center rounded-xl bg-indigo-100 hover:bg-indigo-200 active:bg-indigo-300 text-indigo-800 border border-indigo-200 cursor-pointer transition-all focus:outline-none shadow-sm"
+      title="Finalizar simulación"
+    >
+      Finalizar
+    </button>
   </div>
 
   <!-- Timeline scrub slider -->
   <div class="flex-1 flex flex-col gap-1.5 px-3">
     <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold font-mono">
-      <span>0.00s</span>
-      <span>4.00s</span>
-      <span>8.00s</span>
-      <span>12.00s</span>
-      <span>16.00s</span>
+      {#each timelineLabels as label}
+        <span>{label.toFixed(2)}s</span>
+      {/each}
     </div>
     
     <div class="relative w-full">
@@ -78,7 +92,9 @@
 
   <!-- Telemetry timer text -->
   <div class="px-5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 shadow-inner flex flex-col justify-center items-end shrink-0">
-    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Tiempo</span>
+    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
+      {sim.isFinished ? 'Terminada' : 'Tiempo'}
+    </span>
     <span class="text-sm font-extrabold text-slate-800 font-mono mt-0.5">
       t = {sim.time.toFixed(2)}s <span class="text-xs text-slate-400 font-normal">/ {sim.maxTime.toFixed(2)}s</span>
     </span>

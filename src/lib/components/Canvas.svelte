@@ -78,7 +78,7 @@
   }
 
   // Find a segment near coordinate
-  function getSegmentNear(coords: Vec2D, maxDist = 16): number | null {
+  function getSegmentNear(coords: Vec2D, maxDist = 24): number | null {
     const segments = sim.segments;
     for (let i = 0; i < segments.length; i++) {
       const seg = segments[i];
@@ -93,7 +93,7 @@
       const projY = seg.start.y + t * (seg.end.y - seg.start.y);
 
       const dist = Math.hypot(coords.x - projX, coords.y - projY);
-      if (dist < maxDist && coords.x >= seg.start.x && coords.x <= seg.end.x) {
+      if (dist < maxDist) {
         return i;
       }
     }
@@ -111,6 +111,7 @@
   }
 
   function handleMouseDown(e: MouseEvent) {
+    if (sim.isPlaying) return;
     const coords = getMouseCoords(e);
     if (sim.startPositionEditMode) {
       isDraggingStartPosition = true;
@@ -143,6 +144,7 @@
   }
 
   function handleMouseMove(e: MouseEvent) {
+    if (sim.isPlaying) return;
     const coords = getMouseCoords(e);
     if (sim.startPositionEditMode && isDraggingStartPosition) {
       sim.setInitialVehiclePosition(coords.x, coords.y);
@@ -176,6 +178,7 @@
   }
 
   function handleDoubleClick(e: MouseEvent) {
+    if (sim.isPlaying) return;
     if (sim.activeTool === 'points') {
       const coords = getMouseCoords(e);
       sim.addPoint(coords.x, coords.y);

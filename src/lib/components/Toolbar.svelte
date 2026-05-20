@@ -48,10 +48,13 @@
         {@const isActive = sim.activeTool === tool.id}
         <button
           onclick={() => setTool(tool.id)}
+          disabled={sim.isPlaying}
           class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {
             isActive
               ? 'bg-slate-900 text-white shadow-md scale-[1.02]'
-              : 'text-slate-600 hover:bg-slate-200 hover:text-slate-800'
+              : sim.isPlaying
+                ? 'text-slate-400 cursor-not-allowed'
+                : 'text-slate-600 hover:bg-slate-200 hover:text-slate-800'
           }"
           title={tool.desc}
         >
@@ -63,10 +66,13 @@
 
       <button
         onclick={() => (sim.startPositionEditMode = !sim.startPositionEditMode)}
+        disabled={sim.isPlaying}
         class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {
           sim.startPositionEditMode
             ? 'bg-cyan-600 text-white shadow-md scale-[1.02]'
-            : 'text-slate-600 hover:bg-slate-200 hover:text-slate-800'
+            : sim.isPlaying
+              ? 'text-slate-400 cursor-not-allowed'
+              : 'text-slate-600 hover:bg-slate-200 hover:text-slate-800'
         }"
         title="Activa arrastre del punto de inicio del móvil"
       >
@@ -81,6 +87,7 @@
     <div class="flex items-center gap-2">
       <button
         onclick={() => sim.resetTerrainToDefault()}
+        disabled={sim.isPlaying}
         class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-rose-600 border border-rose-200 bg-rose-50/50 hover:bg-rose-100 hover:text-rose-700 active:bg-rose-200 rounded-xl transition-all cursor-pointer focus:outline-none shadow-sm"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

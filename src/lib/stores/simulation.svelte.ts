@@ -26,8 +26,10 @@ export class SimulationStore {
 
   // Svelte 5 Runes for Reactivity
   isPlaying = $state(false);
+  isFinished = $state(false);
   time = $state(0);
-  maxTime = 16.00;
+  maxTime = $state(16.0);
+  configuredMaxTime = 16.0;
   activeTool = $state<ToolType>('points');
   startPositionEditMode = $state(false);
   
@@ -88,7 +90,9 @@ export class SimulationStore {
   // Resets the mobile to start and prepares the timeline buffer
   resetSimulation() {
     this.isPlaying = false;
+    this.isFinished = false;
     this.time = 0;
+    this.maxTime = this.configuredMaxTime;
     this.controls = { throttle: 0, brake: 0 };
     this.terrainPoints = this.terrainPoints.map((p) => ({
       ...p,
@@ -120,11 +124,6 @@ export class SimulationStore {
 
   // Advance simulation by a fixed physics step
   step(dt: number) {
-    if (this.time >= this.maxTime) {
-      this.isPlaying = false;
-      return;
-    }
-
     const engineState = {
       vehicle: this.vehicle,
       terrain: this.segments,
@@ -136,6 +135,7 @@ export class SimulationStore {
     const nextState = fixedUpdate(engineState, dt);
     this.vehicle = nextState.vehicle;
     this.time = nextState.time;
+    this.maxTime = Math.max(this.configuredMaxTime, this.time);
 
     const halfWidth = this.vehicle.width / 2;
     const leftLimit = halfWidth;
@@ -150,7 +150,7 @@ export class SimulationStore {
         velocity: { ...this.vehicle.velocity, x: 0 },
         aceleration: { ...this.vehicle.aceleration, x: 0 }
       };
-      this.isPlaying = false;
+      this.finishSimulation();
     }
 
     // Save to scrubbing history
@@ -189,8 +189,15 @@ export class SimulationStore {
     this.step(this.config.fixedDt);
   }
 
+  finishSimulation() {
+    this.isPlaying = false;
+    this.isFinished = true;
+    this.maxTime = Math.max(this.config.fixedDt, this.time);
+  }
+
   // Update position of a single terrain point
   updatePointPosition(index: number, x: number, y: number) {
+    if (this.isPlaying) return;
     if (index < 0 || index >= this.terrainPoints.length) return;
     
     // Maintain x-ordering
@@ -221,6 +228,7 @@ export class SimulationStore {
   }
 
   setSegmentAngleDegrees(index: number, angleDeg: number) {
+    if (this.isPlaying) return;
     if (index < 0 || index >= this.terrainPoints.length - 1) return;
 
     const end = this.terrainPoints[index + 1];
@@ -242,6 +250,7 @@ export class SimulationStore {
 
   // Double click to add a point
   addPoint(x: number, y: number) {
+    if (this.isPlaying) return;
     const clampedY = Math.min(this.floorLimitY, Math.max(0, y));
     let insertIndex = -1;
     for (let i = 0; i < this.terrainPoints.length; i++) {
@@ -263,6 +272,7 @@ export class SimulationStore {
 
   // Delete a point (cannot delete first or last point)
   deletePoint(index: number) {
+    if (this.isPlaying) return;
     if (index <= 0 || index >= this.terrainPoints.length - 1) return;
     
     this.terrainPoints.splice(index, 1);
@@ -273,6 +283,7 @@ export class SimulationStore {
 
   // Edit friction for selected segment starting at index
   updateSegmentFriction(index: number, friction: number) {
+    if (this.isPlaying) return;
     if (index < 0 || index >= this.terrainPoints.length - 1) return;
     
     this.terrainPoints[index] = {
@@ -285,6 +296,7 @@ export class SimulationStore {
 
   // Raise Terrain shaping tool
   elevateTerrain(centerX: number, radius = 100, strength = 2.0) {
+    if (this.isPlaying) return;
     this.terrainPoints = this.terrainPoints.map(p => {
       const dist = Math.abs(p.x - centerX);
       if (dist < radius) {
@@ -298,6 +310,7 @@ export class SimulationStore {
 
   // Lower Terrain shaping tool
   lowerTerrain(centerX: number, radius = 100, strength = 2.0) {
+    if (this.isPlaying) return;
     this.terrainPoints = this.terrainPoints.map(p => {
       const dist = Math.abs(p.x - centerX);
       if (dist < radius) {
@@ -311,6 +324,7 @@ export class SimulationStore {
 
   // Localized average smoothing shaping tool
   smoothTerrain(centerX: number, radius = 100) {
+    if (this.isPlaying) return;
     const nextPoints = [...this.terrainPoints];
     for (let i = 1; i < this.terrainPoints.length - 1; i++) {
       const p = this.terrainPoints[i];
@@ -327,6 +341,7 @@ export class SimulationStore {
 
   // Reset terrain to starting shape
   resetTerrainToDefault() {
+    if (this.isPlaying) return;
     this.terrainPoints = [
       { x: 0, y: 360, friction: 0.9 },
       { x: 175, y: 360, friction: 0.9 },
@@ -344,6 +359,7 @@ export class SimulationStore {
   }
 
   setInitialVehiclePosition(x: number, y: number) {
+    if (this.isPlaying) return;
     const clampedX = Math.max(0, Math.min(this.canvasWidth, x));
     const clampedY = Math.max(this.minTerrainY, Math.min(this.floorLimitY, y));
     this.initialVehicleState = {
