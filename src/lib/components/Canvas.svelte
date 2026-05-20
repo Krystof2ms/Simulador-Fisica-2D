@@ -25,8 +25,8 @@
   let width = 900;
   let height = 550;
 
-  // Camera horizontal offset
-  let cameraX = sim.vehicle.position.x - width / 2;
+  // Camera horizontal offset (fixed viewport)
+  let cameraX = 0;
 
   // Track wheel rotation angle
   let wheelRotation = 0;
@@ -188,9 +188,8 @@
     const c = ctx;
     if (!c) return;
     
-    // Smooth camera centering on vehicle
-    const targetCameraX = sim.vehicle.position.x - width / 2;
-    cameraX += (targetCameraX - cameraX) * 0.1; // Smooth dampening
+    // Fixed camera: no horizontal follow
+    cameraX = 0;
 
     // Background clearing
     c.fillStyle = '#f8fafc'; // modern stone color
