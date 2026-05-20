@@ -472,7 +472,7 @@
     animationFrameId = requestAnimationFrame(draw);
   }
 
-  // Keyboard shortcut binding
+  // Keyboard shortcut binding (conduccion manual desactivada)
   function setupKeyboard(e: KeyboardEvent, pressed: boolean) {
     if (['ArrowLeft', 'ArrowRight', 'ArrowDown', 'KeyA', 'KeyD', 'KeyS'].includes(e.code)) {
       e.preventDefault();
@@ -489,11 +489,6 @@
       }
 
       sim.controls = { throttle: nextThrottle, brake: nextBrake };
-
-      // Auto-play when they try to drive!
-      if (pressed && !sim.isPlaying) {
-        sim.isPlaying = true;
-      }
     }
   }
 
@@ -505,17 +500,17 @@
 
     // Global Key Events
     window.addEventListener('keydown', handleKeyDown);
-    const keydownHandler = (e: KeyboardEvent) => setupKeyboard(e, true);
-    const keyupHandler = (e: KeyboardEvent) => setupKeyboard(e, false);
-    
-    window.addEventListener('keydown', keydownHandler);
-    window.addEventListener('keyup', keyupHandler);
+    // Conduccion manual desactivada:
+    // const keydownHandler = (e: KeyboardEvent) => setupKeyboard(e, true);
+    // const keyupHandler = (e: KeyboardEvent) => setupKeyboard(e, false);
+    // window.addEventListener('keydown', keydownHandler);
+    // window.addEventListener('keyup', keyupHandler);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keydown', keydownHandler);
-      window.removeEventListener('keyup', keyupHandler);
+      // window.removeEventListener('keydown', keydownHandler);
+      // window.removeEventListener('keyup', keyupHandler);
     };
   });
 </script>
@@ -524,7 +519,7 @@
   <!-- Key bindings hint badge -->
   <div class="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-sm text-xs font-medium text-slate-200 shadow border border-slate-700/50 flex items-center gap-1.5">
     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-    <span>Usa <kbd class="px-1 bg-slate-700 rounded text-slate-100 font-mono font-bold">A</kbd>/<kbd class="px-1 bg-slate-700 rounded text-slate-100 font-mono font-bold">D</kbd> o <kbd class="px-1 bg-slate-700 rounded text-slate-100 font-mono font-bold">←</kbd>/<kbd class="px-1 bg-slate-700 rounded text-slate-100 font-mono font-bold">→</kbd> para conducir</span>
+    <span>Conducción manual desactivada • simulación por peso + fuerza impulsora</span>
   </div>
 
   {#if sim.activeTool === 'points'}

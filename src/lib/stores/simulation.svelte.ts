@@ -10,6 +10,9 @@ export class SimulationStore {
   config = {
     gravity: 9.8 * 30, // scaled for canvas height
     maxDriveForce: 1800,
+    propulsionForce: 900,
+    propulsionOscillation: 250,
+    propulsionFrequencyHz: 0.6,
     drag: 0.1,
     friction: 0.9,
     fixedDt: 1 / 60,

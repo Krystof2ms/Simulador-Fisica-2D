@@ -8,11 +8,12 @@ import { applyGroundedFriction } from '../vehicle/grounded';
 export function fixedUpdate(state: EngineState, dt = state.config.fixedDt): EngineState {
   const acceleration = computeAcceleration(state.vehicle, {
     gravity: state.config.gravity,
-    throttle: state.controls.throttle,
-    brake: state.controls.brake,
     maxDriveForce: state.config.maxDriveForce,
+    propulsionForce: state.config.propulsionForce,
+    propulsionOscillation: state.config.propulsionOscillation,
+    propulsionFrequencyHz: state.config.propulsionFrequencyHz,
     drag: state.config.drag
-  });
+  }, state.time);
 
   const integrated = integrateSemiImplicitEuler(state.vehicle, acceleration, dt);
   const withGround = resolveGroundContact(integrated, state.terrain, state.config.snapDistance);
