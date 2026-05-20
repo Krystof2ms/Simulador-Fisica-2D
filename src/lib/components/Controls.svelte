@@ -29,12 +29,13 @@
     <!-- Play/Pause Button -->
     <button
       onclick={togglePlay}
-      class="w-12 h-12 flex items-center justify-center rounded-xl font-bold cursor-pointer transition-all focus:outline-none shadow-md hover:scale-105 active:scale-95 {
+      disabled={sim.isFinished}
+      class="w-12 h-12 flex items-center justify-center rounded-xl font-bold cursor-pointer transition-all focus:outline-none shadow-md hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 {
         sim.isPlaying
           ? 'bg-rose-500 text-white hover:bg-rose-600 active:bg-rose-700'
           : 'bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700'
       }"
-      title={sim.isPlaying ? 'Pausar' : 'Iniciar Simulación'}
+      title={sim.isFinished ? 'Simulación terminada (Reinicie para volver a empezar)' : (sim.isPlaying ? 'Pausar' : 'Iniciar Simulación')}
     >
       {#if sim.isPlaying}
         <!-- Pause Icon -->
@@ -62,8 +63,9 @@
 
     <button
       onclick={handleFinish}
-      class="px-3 h-10 flex items-center justify-center rounded-xl bg-indigo-100 hover:bg-indigo-200 active:bg-indigo-300 text-indigo-800 border border-indigo-200 cursor-pointer transition-all focus:outline-none shadow-sm"
-      title="Finalizar simulación"
+      disabled={sim.isFinished}
+      class="px-3 h-10 flex items-center justify-center rounded-xl bg-indigo-100 hover:bg-indigo-200 active:bg-indigo-300 text-indigo-800 border border-indigo-200 cursor-pointer transition-all focus:outline-none shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+      title={sim.isFinished ? 'La simulación ya ha finalizado' : 'Finalizar simulación'}
     >
       Finalizar
     </button>

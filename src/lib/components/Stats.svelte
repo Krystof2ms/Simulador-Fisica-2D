@@ -51,7 +51,7 @@
 
 <div
   class="relative h-190 flex items-stretch transition-all duration-300 ease-out select-none {
-    isCollapsed ? 'w-0' : 'w-[430px]'
+    isCollapsed ? 'w-0' : 'w-107.5'
   } {
     !isDocked && !isCollapsed ? 'absolute top-0 right-2 z-20 drop-shadow-2xl' : ''
   }"
@@ -69,7 +69,7 @@
   </button>
 
   {#if !isCollapsed}
-    <div class="w-[430px] bg-white border border-slate-200 rounded-2xl flex flex-col items-stretch shadow-lg overflow-hidden animate-in fade-in slide-in-from-right-4 duration-300">
+    <div class="w-107.5 bg-white border border-slate-200 rounded-2xl flex flex-col items-stretch shadow-lg overflow-hidden animate-in fade-in slide-in-from-right-4 duration-300">
       <div class="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50">
         <div class="flex flex-col">
           <span class="text-xs font-bold text-slate-400 uppercase tracking-widest leading-none">Telemetría</span>
@@ -151,7 +151,7 @@
               <span class="text-xs text-slate-500 mt-1 leading-normal font-semibold">{seriesTitle}</span>
             </div>
 
-            <div class="w-full h-[320px] border border-slate-200 bg-slate-50 rounded-xl relative shadow-inner p-2 flex items-center justify-center mt-3">
+            <div class="w-full h-80 border border-slate-200 bg-slate-50 rounded-xl relative shadow-inner p-2 flex items-center justify-center mt-3">
               <SeriesUPlot history={sim.history} mode={seriesMode} scale={SCALE} width={380} height={250} />
             </div>
 

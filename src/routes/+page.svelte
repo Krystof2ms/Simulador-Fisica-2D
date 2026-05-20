@@ -9,6 +9,7 @@
   import "$lib/styles/globals.css";
 
   let isDocked = $state(true);
+  let projectName = $state("Simulación de Terreno 01");
 
   // Auto-pause if window becomes hidden
   function handleVisibilityChange() {
@@ -26,7 +27,7 @@
 </script>
 
 <svelte:head>
-  <title>TerraSim 2D - Simulador de Física del Terreno</title>
+  <title>{projectName} - TerraSim 2D</title>
   <meta
     name="description"
     content="Simulador físico 2D interactivo con deformación de relieve por puntos y fricción configurable por sección."
@@ -77,8 +78,20 @@
       </div>
     </div>
 
-    <!-- Active status info -->
+    <!-- Project Name Box & Active status info -->
     <div class="flex items-center gap-4">
+      <div class="project-name-box min-w-[240px]">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        <input 
+          type="text" 
+          bind:value={projectName} 
+          placeholder="Nombre del proyecto..." 
+          class="project-name-input"
+        />
+      </div>
+
       <div
         class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 shadow-sm text-xs font-bold text-slate-600"
       >
@@ -101,7 +114,7 @@
     <EditorPanel />
 
     <!-- Center Workspace (Toolbar, Canvas, Controls) -->
-    <div class="flex-1 flex flex-col gap-4 min-w-[300px]">
+    <div class="flex-1 flex flex-col gap-4 min-w-75">
       <!-- Toolbar -->
       <Toolbar />
 
