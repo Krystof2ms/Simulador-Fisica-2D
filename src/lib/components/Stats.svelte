@@ -50,7 +50,7 @@
 </script>
 
 <div
-  class="relative h-190 flex items-stretch transition-all duration-300 ease-out select-none {
+  class="relative h-full flex items-stretch transition-all duration-300 ease-out select-none {
     isCollapsed ? 'w-0' : 'w-107.5'
   } {
     !isDocked && !isCollapsed ? 'absolute top-0 right-2 z-20 drop-shadow-2xl' : ''

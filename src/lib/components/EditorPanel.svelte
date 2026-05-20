@@ -59,7 +59,7 @@
   }
 </script>
 
-<aside class="w-full xl:w-65 shrink-0 bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4">
+<aside class="w-full xl:w-65 h-full shrink-0 bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 overflow-y-auto">
   <fieldset disabled={sim.isPlaying} class="contents disabled:opacity-60">
   <div class="flex items-center justify-between">
     <h2 class="text-sm font-extrabold text-slate-800 tracking-wide uppercase">Panel de Edición</h2>

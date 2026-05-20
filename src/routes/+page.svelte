@@ -35,11 +35,11 @@
 </svelte:head>
 
 <main
-  class="min-h-screen w-full bg-slate-50/60 p-2 md:p-3 flex flex-col items-center justify-start antialiased font-sans select-none"
+  class="h-screen w-full bg-slate-50/60 p-2 md:p-3 flex flex-col items-center justify-start antialiased font-sans select-none overflow-hidden"
 >
   <!-- Header Bar -->
   <header
-    class="w-full flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-white/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300"
+    class="w-full shrink-0 flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-white/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300"
   >
     <div class="flex items-center gap-3.5">
       <!-- Logo vehicle badge -->
@@ -109,7 +109,7 @@
 
   <!-- Interactive Simulator Section -->
   <section
-    class="w-full flex flex-col xl:flex-row items-stretch justify-center gap-5 transition-all duration-300 relative"
+    class="w-full flex-1 flex flex-col xl:flex-row items-stretch justify-center gap-5 transition-all duration-300 relative overflow-hidden"
   >
     <EditorPanel />
 
@@ -119,12 +119,12 @@
       <Toolbar />
 
       <!-- Canvas container -->
-      <div class="relative w-full">
+      <div class="relative flex-1 min-h-0">
         <Canvas />
 
         <!-- Absolute Overlay: Stats sidebar if NOT docked and NOT collapsed -->
         {#if !isDocked}
-          <div class="absolute top-4 right-4 z-20">
+          <div class="absolute top-4 right-4 bottom-4 z-20 drop-shadow-2xl">
             <Stats bind:isDocked />
           </div>
         {/if}
