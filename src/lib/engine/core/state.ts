@@ -1,9 +1,4 @@
-import type { TerrainSegment, Vehicle } from '../types';
-
-export type ControlsState = {
-  throttle: number;
-  brake: number;
-};
+import type { TerrainSegment, Vehicle, ControlsState } from '../types';
 
 export type EngineConfig = {
   gravity: number;

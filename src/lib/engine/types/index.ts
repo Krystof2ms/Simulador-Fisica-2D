@@ -1,8 +1,12 @@
 export type Vec2D = { x: number; y: number };
 
-export type PointTerrain = Readonly<Vec2D>;
+export type PointTerrain = {
+  readonly x: number;
+  readonly y: number;
+  readonly friction?: number;
+};
 
-export type TerrainSegment = { start: PointTerrain; end: PointTerrain; angle: number };
+export type TerrainSegment = { start: PointTerrain; end: PointTerrain; angle: number; friction: number };
 
 export type Vehicle = {
   position: Vec2D;
@@ -21,4 +25,9 @@ export type SurfaceInfo = {
   normal: Vec2D;
   tangent: Vec2D;
   height: number;
+};
+
+export type ControlsState = {
+  throttle: number;
+  brake: number;
 };

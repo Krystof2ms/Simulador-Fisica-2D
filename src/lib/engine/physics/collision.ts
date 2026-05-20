@@ -26,6 +26,7 @@ export function resolveGroundContact(
   const wheelX = vehicle.position.x;
   const wheelY = vehicle.position.y + halfHeight;
 
+  // 1. Try to find ground contact on terrain segments
   let best: SurfaceInfo | undefined;
   let bestDistance = Number.POSITIVE_INFINITY;
 
@@ -55,14 +56,43 @@ export function resolveGroundContact(
     bestDistance = distance;
   }
 
-  if (!best) {
-    return { ...vehicle, groundedSurface: undefined };
+  // 2. If grounded on a terrain segment, snap to it
+  if (best) {
+    return {
+      ...vehicle,
+      position: { x: vehicle.position.x, y: best.height - halfHeight },
+      velocity: { x: vehicle.velocity.x, y: Math.min(0, vehicle.velocity.y) },
+      groundedSurface: best
+    };
   }
 
+  // 3. Otherwise, check for Floor Limit at Y = 510px (stretching infinitely)
+  const floorY = 510;
+  if (wheelY >= floorY) {
+    const floorSegment: TerrainSegment = {
+      start: { x: -100000, y: floorY, friction: 0.9 },
+      end: { x: 100000, y: floorY, friction: 0.9 },
+      angle: 0,
+      friction: 0.9
+    };
+
+    return {
+      ...vehicle,
+      position: { x: vehicle.position.x, y: floorY - halfHeight },
+      velocity: { x: vehicle.velocity.x, y: Math.min(0, vehicle.velocity.y) },
+      groundedSurface: {
+        segment: floorSegment,
+        angle: 0,
+        normal: { x: 0, y: -1 },
+        tangent: { x: 1, y: 0 },
+        height: floorY
+      }
+    };
+  }
+
+  // 4. Otherwise, vehicle is in the air (flying)
   return {
     ...vehicle,
-    position: { x: vehicle.position.x, y: best.height - halfHeight },
-    velocity: { x: vehicle.velocity.x, y: Math.min(0, vehicle.velocity.y) },
-    groundedSurface: best
+    groundedSurface: undefined
   };
 }

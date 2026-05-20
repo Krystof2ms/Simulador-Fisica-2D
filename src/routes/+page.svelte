@@ -1,156 +1,138 @@
 <script lang="ts">
-  import { invoke } from "@tauri-apps/api/core";
+  import Toolbar from "$lib/components/Toolbar.svelte";
+  import Canvas from "$lib/components/Canvas.svelte";
+  import Controls from "$lib/components/Controls.svelte";
+  import Stats from "$lib/components/Stats.svelte";
+  import { sim } from "$lib/stores/simulation.svelte";
+  import { onMount } from "svelte";
+  import "$lib/styles/globals.css";
 
-  let name = $state("");
-  let greetMsg = $state("");
+  let isDocked = $state(true);
 
-  async function greet(event: Event) {
-    event.preventDefault();
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg = await invoke("greet", { name });
+  // Auto-pause if window becomes hidden
+  function handleVisibilityChange() {
+    if (document.hidden) {
+      sim.isPlaying = false;
+    }
   }
+
+  onMount(() => {
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  });
 </script>
 
-<main class="container">
-  <h1>Welcome to Tauri + Svelte</h1>
+<svelte:head>
+  <title>TerraSim 2D - Simulador de Física del Terreno</title>
+  <meta
+    name="description"
+    content="Simulador físico 2D interactivo con deformación de relieve por puntos y fricción configurable por sección."
+  />
+</svelte:head>
 
-  <div class="row">
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte-kit" alt="SvelteKit Logo" />
-    </a>
-  </div>
-  <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
+<main
+  class="min-h-screen w-full bg-slate-50/60 p-4 md:p-6 flex flex-col items-center justify-start antialiased font-sans select-none"
+>
+  <!-- Header Bar -->
+  <header
+    class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-white/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300"
+  >
+    <div class="flex items-center gap-3.5">
+      <!-- Logo vehicle badge -->
+      <div
+        class="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-cyan-500/20"
+      >
+        <svg
+          class="w-6 h-6 animate-pulse"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.12-1.014L1.5 6.75h16.5a.75.75 0 01.75.75v3.75m-.75 7.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.5m-16.5-7.5h16.5m-1.5-6h-3.75m3.75 0V3.75m-11.25 3h11.25M6.75 19.5v-6"
+          />
+        </svg>
+      </div>
 
-  <form class="row" onsubmit={greet}>
-    <input id="greet-input" placeholder="Enter a name..." bind:value={name} />
-    <button type="submit">Greet</button>
-  </form>
-  <p>{greetMsg}</p>
+      <div class="flex flex-col">
+        <h1
+          class="text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2"
+        >
+          TerraSim 2D
+          <span
+            class="px-2 py-0.5 text-[9px] font-bold tracking-widest text-cyan-700 bg-cyan-50 border border-cyan-150 rounded-full uppercase"
+            >Física</span
+          >
+        </h1>
+        <p class="text-xs font-semibold text-slate-500 mt-0.5">
+          Simulador de móvil sobre terreno editable por puntos y fricción
+          segmentada
+        </p>
+      </div>
+    </div>
+
+    <!-- Active status info -->
+    <div class="flex items-center gap-4">
+      <div
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 shadow-sm text-xs font-bold text-slate-600"
+      >
+        <span
+          class="w-2 h-2 rounded-full {sim.isPlaying
+            ? 'bg-emerald-500 animate-ping'
+            : 'bg-slate-400'}"
+        ></span>
+        <span>{sim.isPlaying ? "Simulando a 60 FPS" : "En pausa"}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Simulator Section -->
+  <section
+    class="w-full max-w-7xl flex flex-col md:flex-row items-stretch justify-center gap-5 transition-all duration-300 relative"
+  >
+    <!-- Left Workspace (Toolbar, Canvas, Controls) -->
+    <div class="flex-1 flex flex-col gap-4 min-w-[300px]">
+      <!-- Toolbar -->
+      <Toolbar />
+
+      <!-- Canvas container -->
+      <div class="relative w-full">
+        <Canvas />
+
+        <!-- Absolute Overlay: Stats sidebar if NOT docked and NOT collapsed -->
+        {#if !isDocked}
+          <div class="absolute top-4 right-4 z-20">
+            <Stats bind:isDocked />
+          </div>
+        {/if}
+      </div>
+
+      <!-- Simulation Time Playback Controls -->
+      <Controls />
+    </div>
+
+    <!-- Right Telemetry Workspace (Sidebar Stats - Rendered inline if Docked) -->
+    {#if isDocked}
+      <div class="shrink-0 flex items-stretch select-none">
+        <Stats bind:isDocked />
+      </div>
+    {/if}
+  </section>
 </main>
 
 <style>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.svelte-kit:hover {
-  filter: drop-shadow(0 0 2em #ff3e00);
-}
-
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-.container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  text-align: center;
-}
-
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
+  /* Base styles overrides */
+  :global(:root) {
+    font-family:
+      "Outfit",
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
-
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
-  }
-}
-
 </style>

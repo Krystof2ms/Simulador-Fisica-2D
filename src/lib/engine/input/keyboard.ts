@@ -1,4 +1,4 @@
-import type { ControlsState } from '../core/state';
+import type { ControlsState } from '../types';
 import { clamp } from '../utils/clamp';
 
 export function updateControlsFromKeyboard(controls: ControlsState, event: KeyboardEvent, pressed: boolean): ControlsState {

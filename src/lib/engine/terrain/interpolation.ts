@@ -7,7 +7,12 @@ export function buildTerrainSegments(points: ReadonlyArray<PointTerrain>): Terra
     const start = points[i];
     const end = points[i + 1];
     const angle = Math.atan2(end.y - start.y, end.x - start.x);
-    segments.push({ start, end, angle });
+    segments.push({
+      start,
+      end,
+      angle,
+      friction: start.friction ?? 0.9
+    });
   }
 
   return segments;
