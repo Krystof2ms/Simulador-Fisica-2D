@@ -13,6 +13,8 @@
   let activeTab = $state<'estado' | 'serie' | 'export'>('estado');
   let seriesMode = $state<'dist' | 'vel' | 'acc'>('vel');
 
+  $inspect(seriesMode);
+
   let exportOptions = $state<ExportOptions>({
     distance: true,
     velocity: true,

@@ -1,7 +1,8 @@
 <script lang="ts">
-  import Uplot from 'uplot-svelte';
+  import uPlot from 'uplot';
   import type { AlignedData, Options } from 'uplot';
   import 'uplot/dist/uPlot.min.css';
+  import { onMount, onDestroy } from 'svelte';
 
   type Mode = 'dist' | 'vel' | 'acc';
   type HistoryItem = {
@@ -22,6 +23,9 @@
   }
 
   let { history, mode, scale = 30, width = 260, height = 140 }: Props = $props();
+
+  let container: HTMLDivElement;
+  let chart: uPlot | null = null;
 
   const metricLabel = $derived(mode === 'dist' ? 'Distancia' : mode === 'acc' ? 'Aceleración' : 'Velocidad');
   const metricUnit = $derived(mode === 'dist' ? 'm' : mode === 'acc' ? 'm/s²' : 'm/s');
@@ -45,6 +49,7 @@
       width,
       height,
       legend: { show: false },
+      cursor: { show: false },
       scales: {
         x: { time: false },
         y: { auto: true }
@@ -73,12 +78,33 @@
     };
     return opts;
   });
+
+  // Watch for data/options changes and update chart
+  $effect(() => {
+    if (chart && container) {
+      chart.setSize({ width, height });
+      chart.setData(seriesData);
+    } else if (container && history.length > 1) {
+      chart = new uPlot(options, seriesData, container);
+    }
+  });
+
+  // Re-create chart if options change significantly (uPlot is sometimes picky about dynamic options)
+  $effect(() => {
+    options; // track
+    if (chart) {
+      chart.destroy();
+      chart = new uPlot(options, seriesData, container);
+    }
+  });
+
+  onDestroy(() => {
+    if (chart) chart.destroy();
+  });
 </script>
 
-<div class="w-full h-full flex items-center justify-center">
-  {#if history.length > 1}
-    <Uplot options={options} data={seriesData} />
-  {:else}
+<div class="w-full h-full flex items-center justify-center overflow-hidden" bind:this={container}>
+  {#if history.length <= 1}
     <div class="text-xs font-semibold text-slate-400 text-center px-4">Inicia la simulación para registrar y graficar series.</div>
   {/if}
 </div>
