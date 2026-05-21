@@ -125,7 +125,7 @@
         <!-- Absolute Overlay: Stats sidebar if NOT docked and NOT collapsed -->
         {#if !isDocked}
           <div class="absolute top-4 right-4 bottom-4 z-20 drop-shadow-2xl">
-            <Stats bind:isDocked />
+            <Stats bind:isDocked {projectName} />
           </div>
         {/if}
       </div>
@@ -137,7 +137,7 @@
     <!-- Right Telemetry Workspace (Sidebar Stats - Rendered inline if Docked) -->
     {#if isDocked}
       <div class="shrink-0 flex items-stretch select-none">
-        <Stats bind:isDocked />
+        <Stats bind:isDocked {projectName} />
       </div>
     {/if}
   </section>
