@@ -1,9 +1,9 @@
 <script lang="ts">
   import Toolbar from "$lib/components/Toolbar.svelte";
-  import EditorPanel from "$lib/components/EditorPanel.svelte";
-  import Canvas from "$lib/components/Canvas.svelte";
+  import EditorPanel from "$lib/components/EditorPanel/EditorPanel.svelte";
+  import Canvas from "$lib/components/Canvas/Canvas.svelte";
   import Controls from "$lib/components/Controls.svelte";
-  import Stats from "$lib/components/Stats.svelte";
+  import Stats from "$lib/components/Stats/Stats.svelte";
   import { sim } from "$lib/stores/simulation.svelte";
   import { onMount } from "svelte";
   import "$lib/styles/globals.css";
@@ -81,8 +81,18 @@
     <!-- Project Name Box & Active status info -->
     <div class="flex items-center gap-4">
       <div class="project-name-box min-w-60">
-        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        <svg
+          class="w-4 h-4 text-slate-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+          />
         </svg>
         <input
           type="text"
@@ -102,7 +112,13 @@
               ? 'bg-indigo-500'
               : 'bg-slate-400'}"
         ></span>
-        <span>{sim.isPlaying ? "Simulando a 60 FPS" : sim.isFinished ? "Simulación terminada" : "En pausa"}</span>
+        <span
+          >{sim.isPlaying
+            ? "Simulando a 60 FPS"
+            : sim.isFinished
+              ? "Simulación terminada"
+              : "En pausa"}</span
+        >
       </div>
     </div>
   </header>
