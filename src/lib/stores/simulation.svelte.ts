@@ -1,7 +1,7 @@
-import { createVehicle } from '../engine/vehicle/vehicle';
-import { fixedUpdate } from '../engine/core/fixedUpdate';
-import { buildTerrainSegments } from '../engine/terrain/interpolation';
-import type { Vehicle, PointTerrain, TerrainSegment, ControlsState } from '../engine/types';
+import { createVehicle } from '$lib/engine/vehicle/vehicle';
+import { fixedUpdate } from '$lib/engine/core/fixedUpdate';
+import { buildTerrainSegments } from '$lib/engine/terrain/interpolation';
+import type { Vehicle, PointTerrain, ControlsState } from '$lib/engine/types';
 
 export type ToolType = 'elevate' | 'lower' | 'smooth' | 'points' | 'friction';
 
@@ -15,9 +15,9 @@ export class SimulationStore {
     gravity: 9.8 * 30, // scaled for canvas height
     maxDriveForce: 1800,
     propulsionForce: 900,
-    propulsionOscillation: 250,
-    propulsionFrequencyHz: 0.6,
-    propulsionDropFactor: 0.004,
+    propulsionOscillation: 0,
+    propulsionFrequencyHz: 0.0,
+    propulsionDropFactor: 0.0,
     drag: 0.1,
     friction: 0.9,
     fixedDt: 1 / 60,
@@ -32,7 +32,7 @@ export class SimulationStore {
   configuredMaxTime = 16.0;
   activeTool = $state<ToolType>('points');
   startPositionEditMode = $state(false);
-  
+
   // Selection/Hover indices
   selectedPointIndex = $state<number | null>(null);
   selectedSegmentIndex = $state<number | null>(null);
@@ -98,7 +98,7 @@ export class SimulationStore {
       ...p,
       y: Math.min(this.floorLimitY, Math.max(0, p.y))
     }));
-    
+
     // Find perfect Y-coordinate start to snap vehicle to terrain segment at x=50
     const startSegments = this.segments;
     let initialY = 200;
@@ -166,7 +166,7 @@ export class SimulationStore {
     this.isPlaying = false;
 
     const frameIndex = Math.round(targetTime / this.config.fixedDt);
-    
+
     if (frameIndex < this.history.length) {
       // Fetch matching historical state
       this.vehicle = JSON.parse(JSON.stringify(this.history[frameIndex].vehicle));
@@ -199,7 +199,7 @@ export class SimulationStore {
   updatePointPosition(index: number, x: number, y: number) {
     if (this.isPlaying) return;
     if (index < 0 || index >= this.terrainPoints.length) return;
-    
+
     // Maintain x-ordering
     const minX = index > 0 ? this.terrainPoints[index - 1].x + 10 : 0;
     const maxX = index < this.terrainPoints.length - 1 ? this.terrainPoints[index + 1].x - 10 : 2000;
@@ -207,13 +207,13 @@ export class SimulationStore {
     const clampedX = isEdgePoint
       ? this.terrainPoints[index].x
       : Math.max(minX, Math.min(maxX, x));
-    
+
     this.terrainPoints[index] = {
       ...this.terrainPoints[index],
       x: clampedX,
       y: Math.min(this.floorLimitY, Math.max(this.minTerrainY, y))
     };
-    
+
     this.resetSimulation();
   }
 
@@ -274,10 +274,10 @@ export class SimulationStore {
   deletePoint(index: number) {
     if (this.isPlaying) return;
     if (index <= 0 || index >= this.terrainPoints.length - 1) return;
-    
+
     this.terrainPoints.splice(index, 1);
     this.selectedPointIndex = null;
-    
+
     this.resetSimulation();
   }
 
@@ -285,12 +285,12 @@ export class SimulationStore {
   updateSegmentFriction(index: number, friction: number) {
     if (this.isPlaying) return;
     if (index < 0 || index >= this.terrainPoints.length - 1) return;
-    
+
     this.terrainPoints[index] = {
       ...this.terrainPoints[index],
       friction
     };
-    
+
     this.resetSimulation();
   }
 
