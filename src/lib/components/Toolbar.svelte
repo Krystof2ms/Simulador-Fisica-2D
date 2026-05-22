@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sim, type ToolType } from "$lib/stores/simulation";
+  import { sim, editor, type ToolType } from "$lib/stores/simulation";
 
   const tools: { id: ToolType; label: string; icon: string; desc: string }[] = [
     {
@@ -35,8 +35,8 @@
   ];
 
   function setTool(toolId: ToolType) {
-    sim.activeTool = toolId;
-    sim.startPositionEditMode = false;
+    editor.activeTool = toolId;
+    editor.startPositionEditMode = false;
   }
 </script>
 
@@ -49,7 +49,7 @@
       class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200"
     >
       {#each tools as tool}
-        {@const isActive = sim.activeTool === tool.id}
+        {@const isActive = editor.activeTool === tool.id}
         <button
           onclick={() => setTool(tool.id)}
           disabled={sim.isPlaying}
@@ -67,9 +67,9 @@
       {/each}
 
       <button
-        onclick={() => (sim.startPositionEditMode = !sim.startPositionEditMode)}
+        onclick={() => (editor.startPositionEditMode = !editor.startPositionEditMode)}
         disabled={sim.isPlaying}
-        class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {sim.startPositionEditMode
+        class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {editor.startPositionEditMode
           ? 'bg-cyan-600 text-white shadow-md scale-[1.02]'
           : sim.isPlaying
             ? 'text-slate-400 cursor-not-allowed'
@@ -135,6 +135,6 @@
         d="M11.25 11.25l.041-.02a.75.75 0 111.063.852l-.708 2.836a.75.75 0 001.063.852l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
       />
     </svg>
-    <span>{tools.find((t) => t.id === sim.activeTool)?.desc}</span>
+    <span>{tools.find((t) => t.id === editor.activeTool)?.desc}</span>
   </div>
 </div>

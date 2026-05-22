@@ -28,13 +28,7 @@ import {
     getHistoryFrame,
     type HistoryFrame
 } from './timeline';
-
-export type ToolType =
-    | 'elevate'
-    | 'lower'
-    | 'smooth'
-    | 'points'
-    | 'friction';
+import { editor } from './EditorStore.svelte';
 
 export class SimulationStore {
     private readonly canvasWidth = CANVAS_WIDTH;
@@ -50,16 +44,6 @@ export class SimulationStore {
 
     maxTime = $state(16);
     configuredMaxTime = 16;
-
-    activeTool = $state<ToolType>('points');
-
-    startPositionEditMode = $state(false);
-
-    selectedPointIndex = $state<number | null>(null);
-    selectedSegmentIndex = $state<number | null>(null);
-
-    hoveredPointIndex = $state<number | null>(null);
-    hoveredSegmentIndex = $state<number | null>(null);
 
     terrainPoints = $state<PointTerrain[]>(
         structuredClone(DEFAULT_TERRAIN)
@@ -185,7 +169,6 @@ export class SimulationStore {
         );
 
         const halfWidth = this.vehicle.width / 2;
-
         const leftLimit = halfWidth;
         const rightLimit = this.canvasWidth - halfWidth;
 
@@ -250,7 +233,6 @@ export class SimulationStore {
             this.history[this.history.length - 1];
 
         this.vehicle = cloneVehicle(lastFrame.vehicle);
-
         this.time = lastFrame.time;
 
         while (
@@ -315,12 +297,9 @@ export class SimulationStore {
     resetTerrainToDefault() {
         if (this.isPlaying) return;
 
-        this.terrainPoints = structuredClone(
-            DEFAULT_TERRAIN
-        );
+        this.terrainPoints = structuredClone(DEFAULT_TERRAIN);
 
-        this.selectedPointIndex = null;
-        this.selectedSegmentIndex = null;
+        editor.clearSelection();
 
         this.resetSimulation();
     }
@@ -446,7 +425,7 @@ export class SimulationStore {
 
         this.terrainPoints.splice(index, 1);
 
-        this.selectedPointIndex = null;
+        editor.clearSelection();
 
         this.resetSimulation();
     }
@@ -501,9 +480,7 @@ export class SimulationStore {
         }
 
         const radians = (angleDeg * Math.PI) / 180;
-
-        const rawStartY =
-            end.y + Math.tan(radians) * dx;
+        const rawStartY = end.y + Math.tan(radians) * dx;
 
         const clampedStartY = Math.min(
             this.floorLimitY,

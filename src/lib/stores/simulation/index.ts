@@ -1,1 +1,2 @@
-export { sim, type ToolType } from "./SimulationStore.svelte";
+export { sim } from './SimulationStore.svelte';
+export { editor, type ToolType } from './EditorStore.svelte';

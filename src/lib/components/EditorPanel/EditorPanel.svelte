@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sim } from "$lib/stores/simulation";
+  import { sim, editor } from "$lib/stores/simulation";
 
   const presets = [
     {
@@ -25,21 +25,21 @@
   ];
 
   function handleFrictionSlider(e: Event) {
-    if (sim.selectedSegmentIndex === null) return;
+    if (editor.selectedSegmentIndex === null) return;
     const value = parseFloat((e.target as HTMLInputElement).value);
-    sim.updateSegmentFriction(sim.selectedSegmentIndex, value);
+    sim.updateSegmentFriction(editor.selectedSegmentIndex, value);
   }
 
   function applyPreset(value: number) {
-    if (sim.selectedSegmentIndex === null) return;
-    sim.updateSegmentFriction(sim.selectedSegmentIndex, value);
+    if (editor.selectedSegmentIndex === null) return;
+    sim.updateSegmentFriction(editor.selectedSegmentIndex, value);
   }
 
   function handleAngleInput(e: Event) {
-    if (sim.selectedSegmentIndex === null) return;
+    if (editor.selectedSegmentIndex === null) return;
     const value = parseFloat((e.target as HTMLInputElement).value);
     if (Number.isNaN(value)) return;
-    sim.setSegmentAngleDegrees(sim.selectedSegmentIndex, value);
+    sim.setSegmentAngleDegrees(editor.selectedSegmentIndex, value);
   }
 
   function updateVehicleMass(e: Event) {
@@ -76,7 +76,7 @@
   }
 
   function toggleStartPositionEditMode() {
-    sim.startPositionEditMode = !sim.startPositionEditMode;
+    editor.startPositionEditMode = !editor.startPositionEditMode;
   }
 </script>
 
@@ -88,21 +88,21 @@
       <h2 class="text-sm font-extrabold text-slate-800 tracking-wide uppercase">
         Panel de Edición
       </h2>
-      <span class="text-[11px] font-mono text-slate-500">{sim.activeTool}</span>
+      <span class="text-[11px] font-mono text-slate-500">{editor.activeTool}</span>
     </div>
 
-    {#if sim.selectedSegmentIndex !== null}
+    {#if editor.selectedSegmentIndex !== null}
       {@const activeFriction =
-        sim.segments[sim.selectedSegmentIndex]?.friction ?? 0.9}
+        sim.segments[editor.selectedSegmentIndex]?.friction ?? 0.9}
       {@const activeAngleDeg =
-        sim.getSegmentAngleDegrees(sim.selectedSegmentIndex) ?? 0}
+        sim.getSegmentAngleDegrees(editor.selectedSegmentIndex) ?? 0}
 
       <div class="p-3 rounded-xl border border-slate-200 bg-slate-50">
         <div class="text-xs font-semibold text-slate-500">
           Segmento seleccionado
         </div>
         <div class="text-sm font-bold text-slate-800 mt-1">
-          Sección {sim.selectedSegmentIndex + 1}
+          Sección {editor.selectedSegmentIndex! + 1}
         </div>
       </div>
 
@@ -182,11 +182,11 @@
         <button
           onclick={toggleStartPositionEditMode}
           class="w-full px-3 py-2 rounded-lg border text-sm font-semibold transition-colors cursor-pointer
-          {sim.startPositionEditMode
+          {editor.startPositionEditMode
             ? 'bg-cyan-600 text-white border-cyan-700'
             : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'}"
         >
-          {sim.startPositionEditMode
+          {editor.startPositionEditMode
             ? "Modo mover inicio: ACTIVO"
             : "Modo mover inicio: INACTIVO"}
         </button>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { sim } from "$lib/stores/simulation";
+  import { sim, editor } from "$lib/stores/simulation";
   import {
     createDustParticle,
     updateParticles,
@@ -46,37 +46,37 @@
   function handleMouseDown(e: MouseEvent) {
     if (sim.isPlaying) return;
     const coords = getMouseCoords(e, canvasElement, width, height, cameraX);
-    if (sim.startPositionEditMode) {
+    if (editor.startPositionEditMode) {
       isDraggingStartPosition = true;
       sim.setInitialVehiclePosition(coords.x, coords.y);
       return;
     }
 
-    if (sim.activeTool === "points") {
+    if (editor.activeTool === "points") {
       const index = getPointNear(coords, sim.terrainPoints);
       if (index !== null) {
         isDragging = true;
         dragPointIndex = index;
-        sim.selectedPointIndex = index;
-        sim.selectedSegmentIndex = null;
+        editor.selectedPointIndex = index;
+        editor.selectedSegmentIndex = null;
       } else {
-        sim.selectedPointIndex = null;
+        editor.selectedPointIndex = null;
       }
-    } else if (sim.activeTool === "friction") {
+    } else if (editor.activeTool === "friction") {
       const index = getSegmentNear(coords, sim.segments);
       if (index !== null) {
-        sim.selectedSegmentIndex = index;
-        sim.selectedPointIndex = null;
+        editor.selectedSegmentIndex = index;
+        editor.selectedPointIndex = null;
       } else {
-        sim.selectedSegmentIndex = null;
+        editor.selectedSegmentIndex = null;
       }
-    } else if (sim.activeTool === "elevate") {
+    } else if (editor.activeTool === "elevate") {
       isPainting = true;
       sim.elevateTerrain(coords.x);
-    } else if (sim.activeTool === "lower") {
+    } else if (editor.activeTool === "lower") {
       isPainting = true;
       sim.lowerTerrain(coords.x);
-    } else if (sim.activeTool === "smooth") {
+    } else if (editor.activeTool === "smooth") {
       isPainting = true;
       sim.smoothTerrain(coords.x);
     }
@@ -85,31 +85,31 @@
   function handleMouseMove(e: MouseEvent) {
     if (sim.isPlaying) return;
     const coords = getMouseCoords(e, canvasElement, width, height, cameraX);
-    if (sim.startPositionEditMode && isDraggingStartPosition) {
+    if (editor.startPositionEditMode && isDraggingStartPosition) {
       sim.setInitialVehiclePosition(coords.x, coords.y);
       return;
     }
 
     // Update hovers
-    if (sim.activeTool === "points") {
-      sim.hoveredPointIndex = getPointNear(coords, sim.terrainPoints);
-      sim.hoveredSegmentIndex = null;
-    } else if (sim.activeTool === "friction") {
-      sim.hoveredSegmentIndex = getSegmentNear(coords, sim.segments);
-      sim.hoveredPointIndex = null;
+    if (editor.activeTool === "points") {
+      editor.hoveredPointIndex = getPointNear(coords, sim.terrainPoints);
+      editor.hoveredSegmentIndex = null;
+    } else if (editor.activeTool === "friction") {
+      editor.hoveredSegmentIndex = getSegmentNear(coords, sim.segments);
+      editor.hoveredPointIndex = null;
     } else {
-      sim.hoveredPointIndex = null;
-      sim.hoveredSegmentIndex = null;
+      editor.hoveredPointIndex = null;
+      editor.hoveredSegmentIndex = null;
     }
 
     if (isDragging && dragPointIndex !== null) {
       sim.updatePointPosition(dragPointIndex, coords.x, coords.y);
     } else if (isPainting) {
-      if (sim.activeTool === "elevate") {
+      if (editor.activeTool === "elevate") {
         sim.elevateTerrain(coords.x);
-      } else if (sim.activeTool === "lower") {
+      } else if (editor.activeTool === "lower") {
         sim.lowerTerrain(coords.x);
-      } else if (sim.activeTool === "smooth") {
+      } else if (editor.activeTool === "smooth") {
         sim.smoothTerrain(coords.x);
       }
     }
@@ -124,7 +124,7 @@
 
   function handleDoubleClick(e: MouseEvent) {
     if (sim.isPlaying) return;
-    if (sim.activeTool === "points") {
+    if (editor.activeTool === "points") {
       const coords = getMouseCoords(e, canvasElement, width, height, cameraX);
       sim.addPoint(coords.x, coords.y);
     }
@@ -133,8 +133,8 @@
   // Keyboard delete listener
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === "Delete" || e.key === "Backspace") {
-      if (sim.selectedPointIndex !== null) {
-        sim.deletePoint(sim.selectedPointIndex);
+      if (editor.selectedPointIndex !== null) {
+        sim.deletePoint(editor.selectedPointIndex);
       }
     }
   }
@@ -163,23 +163,23 @@
       c,
       sim.segments,
       height,
-      sim.selectedSegmentIndex,
-      sim.hoveredSegmentIndex,
-      sim.activeTool,
+      editor.selectedSegmentIndex,
+      editor.hoveredSegmentIndex,
+      editor.activeTool,
       sim.getSegmentAngleDegrees.bind(sim),
     );
     render.drawParticles(c, particles);
 
-    if (sim.startPositionEditMode) {
+    if (editor.startPositionEditMode) {
       render.drawStartPosition(c, sim.initialVehicleState.position);
     }
 
-    if (sim.activeTool === "points" || sim.activeTool === "friction") {
+    if (editor.activeTool === "points" || editor.activeTool === "friction") {
       render.drawTerrainHandles(
         c,
         sim.terrainPoints,
-        sim.selectedPointIndex,
-        sim.hoveredPointIndex,
+        editor.selectedPointIndex,
+        editor.hoveredPointIndex,
       );
     }
 
@@ -252,7 +252,7 @@
       >
     </div>
 
-    {#if sim.activeTool === "points"}
+    {#if editor.activeTool === "points"}
       <div
         class="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-sm text-xs font-medium text-slate-200 shadow border border-slate-700/50"
       >
