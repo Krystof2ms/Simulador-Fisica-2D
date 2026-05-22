@@ -11,7 +11,7 @@ export type TerrainSegment = { start: PointTerrain; end: PointTerrain; angle: nu
 export type Vehicle = {
   position: Vec2D;
   velocity: Vec2D;
-  aceleration: Vec2D;
+  acceleration: Vec2D;
   mass: number;
   angle: number;
   width: number;

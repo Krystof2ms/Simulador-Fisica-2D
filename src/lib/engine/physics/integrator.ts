@@ -15,6 +15,6 @@ export function integrateSemiImplicitEuler(vehicle: Vehicle, acceleration: Vec2D
     ...vehicle,
     position,
     velocity,
-    aceleration: acceleration
+    acceleration: acceleration
   };
 }

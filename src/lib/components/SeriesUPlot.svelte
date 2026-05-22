@@ -10,7 +10,7 @@
     vehicle: {
       position: { x: number; y: number };
       velocity: { x: number; y: number };
-      aceleration: { x: number; y: number };
+      acceleration: { x: number; y: number };
     };
   };
 
@@ -53,7 +53,7 @@
       if (mode === "dist") return (h.vehicle.position.x - x0) / scale;
       if (mode === "acc")
         return (
-          Math.hypot(h.vehicle.aceleration.x, h.vehicle.aceleration.y) / scale
+          Math.hypot(h.vehicle.acceleration.x, h.vehicle.acceleration.y) / scale
         );
       return Math.hypot(h.vehicle.velocity.x, h.vehicle.velocity.y) / scale;
     });

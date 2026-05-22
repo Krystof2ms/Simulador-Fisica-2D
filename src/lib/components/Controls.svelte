@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sim } from "../stores/simulation.svelte";
+  import { sim } from "$lib/stores/simulation";
   const TIMELINE_MARKS = 6;
   const timelineLabels = $derived(
     Array.from(

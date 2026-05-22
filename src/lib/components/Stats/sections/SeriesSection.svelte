@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sim } from "$lib/stores/simulation.svelte";
+  import { sim } from "$lib/stores/simulation";
   import SeriesUPlot from "$lib/components/SeriesUPlot.svelte";
 
   const SCALE = 30;
@@ -28,7 +28,8 @@
       <button
         type="button"
         onclick={() => setSeriesMode(btn.id as "dist" | "vel" | "acc")}
-        class="px-2 py-1 rounded-md transition-colors cursor-pointer {seriesMode === btn.id
+        class="px-2 py-1 rounded-md transition-colors cursor-pointer {seriesMode ===
+        btn.id
           ? 'bg-white text-slate-900 shadow-sm'
           : 'text-slate-500 hover:bg-slate-200 hover:text-slate-700'}"
       >
@@ -39,7 +40,9 @@
 
   <div class="flex-1 flex flex-col justify-between h-full py-1">
     <div class="flex flex-col">
-      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+      <span
+        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
+      >
         Gráfico de Serie
       </span>
       <span class="text-xs text-slate-500 mt-1 leading-normal font-semibold">
@@ -60,21 +63,31 @@
     </div>
 
     <!-- Physics config summary -->
-    <div class="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col gap-1.5 shadow-inner">
-      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
+    <div
+      class="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col gap-1.5 shadow-inner"
+    >
+      <span
+        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none"
+      >
         Configuración de Física
       </span>
       <div class="flex justify-between text-xs font-bold text-slate-500 mt-1">
         <span>Masa Móvil</span>
-        <span class="font-mono text-slate-800 font-extrabold">{sim.vehicle.mass} kg</span>
+        <span class="font-mono text-slate-800 font-extrabold"
+          >{sim.vehicle.mass} kg</span
+        >
       </div>
       <div class="flex justify-between text-xs font-bold text-slate-500">
         <span>Paso de tiempo</span>
-        <span class="font-mono text-slate-800 font-extrabold">{sim.config.fixedDt.toFixed(3)} s</span>
+        <span class="font-mono text-slate-800 font-extrabold"
+          >{sim.config.fixedDt.toFixed(3)} s</span
+        >
       </div>
       <div class="flex justify-between text-xs font-bold text-slate-500">
         <span>FPS físico</span>
-        <span class="font-mono text-slate-800 font-extrabold">{(1 / sim.config.fixedDt).toFixed(0)} Hz</span>
+        <span class="font-mono text-slate-800 font-extrabold"
+          >{(1 / sim.config.fixedDt).toFixed(0)} Hz</span
+        >
       </div>
     </div>
   </div>

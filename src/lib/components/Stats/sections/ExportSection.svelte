@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sim } from "$lib/stores/simulation.svelte";
+  import { sim } from "$lib/stores/simulation";
   import { exportToCSV, type ExportOptions } from "$lib/utils/export";
 
   interface Props {
@@ -38,17 +38,16 @@
 <div class="flex flex-col gap-4">
   <!-- Checkbox options -->
   <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 shadow-inner">
-    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-3">
+    <span
+      class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-3"
+    >
       Series a Exportar
     </span>
     <div class="flex flex-col gap-3">
-      {#each [
-        { key: "distance" as const, label: "Distancia y Posición" },
-        { key: "velocity" as const, label: "Velocidad (X, Y, Total)" },
-        { key: "acceleration" as const, label: "Aceleración (X, Y, Neta)" },
-        { key: "friction" as const, label: "Fricción y Pendiente" },
-      ] as option}
-        <label class="flex items-center gap-3 text-sm font-semibold text-slate-700 cursor-pointer">
+      {#each [{ key: "distance" as const, label: "Distancia y Posición" }, { key: "velocity" as const, label: "Velocidad (X, Y, Total)" }, { key: "acceleration" as const, label: "Aceleración (X, Y, Neta)" }, { key: "friction" as const, label: "Fricción y Pendiente" }] as option}
+        <label
+          class="flex items-center gap-3 text-sm font-semibold text-slate-700 cursor-pointer"
+        >
           <input
             type="checkbox"
             bind:checked={exportOptions[option.key]}
@@ -74,7 +73,14 @@
           fill="none"
           viewBox="0 0 24 24"
         >
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
           <path
             class="opacity-75"
             fill="currentColor"
@@ -83,8 +89,18 @@
         </svg>
         Exportando...
       {:else}
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+          />
         </svg>
         Generar CSV de Telemetría
       {/if}
@@ -92,24 +108,36 @@
 
     <!-- Status feedback -->
     {#if exportSuccess === true}
-      <div class="p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold rounded-lg flex items-center gap-2 animate-in fade-in zoom-in-95">
+      <div
+        class="p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold rounded-lg flex items-center gap-2 animate-in fade-in zoom-in-95"
+      >
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          />
         </svg>
         ¡Exportación completada con éxito!
       </div>
     {:else if exportSuccess === false}
-      <div class="p-3 bg-rose-50 border border-rose-100 text-rose-700 text-xs font-bold rounded-lg flex items-center gap-2 animate-in fade-in zoom-in-95">
+      <div
+        class="p-3 bg-rose-50 border border-rose-100 text-rose-700 text-xs font-bold rounded-lg flex items-center gap-2 animate-in fade-in zoom-in-95"
+      >
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clip-rule="evenodd"
+          />
         </svg>
         Error al exportar. Intente de nuevo.
       </div>
     {/if}
 
     <p class="text-[11px] text-slate-400 font-medium leading-relaxed px-1">
-      Seleccione los datos que desea incluir en el archivo CSV. El archivo incluirá
-      una fila por cada paso de tiempo de la simulación.
+      Seleccione los datos que desea incluir en el archivo CSV. El archivo
+      incluirá una fila por cada paso de tiempo de la simulación.
     </p>
   </div>
 </div>

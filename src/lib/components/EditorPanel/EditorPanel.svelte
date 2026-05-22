@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sim } from "$lib/stores/simulation.svelte";
+  import { sim } from "$lib/stores/simulation";
 
   const presets = [
     {

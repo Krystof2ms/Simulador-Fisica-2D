@@ -19,37 +19,37 @@ export async function exportToCSV(history: any[], options: ExportOptions, projec
 
   const SCALE = 30;
   const x0 = history[0].vehicle.position.x;
-  
+
   const rows = history.map((h) => {
     const row = [h.time.toFixed(4)];
-    
+
     if (options.distance) {
       const dx = (h.vehicle.position.x / SCALE).toFixed(4);
       const dy = ((760 - h.vehicle.position.y) / SCALE).toFixed(4);
       const dist = ((h.vehicle.position.x - x0) / SCALE).toFixed(4);
       row.push(dx, dy, dist);
     }
-    
+
     if (options.velocity) {
       const vx = (h.vehicle.velocity.x / SCALE).toFixed(4);
       const vy = (-h.vehicle.velocity.y / SCALE).toFixed(4);
       const vTotal = (Math.hypot(h.vehicle.velocity.x, h.vehicle.velocity.y) / SCALE).toFixed(4);
       row.push(vx, vy, vTotal);
     }
-    
+
     if (options.acceleration) {
-      const ax = (h.vehicle.aceleration.x / SCALE).toFixed(4);
-      const ay = (-h.vehicle.aceleration.y / SCALE).toFixed(4);
-      const aTotal = (Math.hypot(h.vehicle.aceleration.x, h.vehicle.aceleration.y) / SCALE).toFixed(4);
+      const ax = (h.vehicle.acceleration.x / SCALE).toFixed(4);
+      const ay = (-h.vehicle.acceleration.y / SCALE).toFixed(4);
+      const aTotal = (Math.hypot(h.vehicle.acceleration.x, h.vehicle.acceleration.y) / SCALE).toFixed(4);
       row.push(ax, ay, aTotal);
     }
-    
+
     if (options.friction) {
       const friction = h.vehicle.groundedSurface ? h.vehicle.groundedSurface.segment.friction.toFixed(4) : '0';
       const angle = h.vehicle.groundedSurface ? (h.vehicle.groundedSurface.angle * 180 / Math.PI).toFixed(2) : '0';
       row.push(friction, angle);
     }
-    
+
     return row.join(',');
   });
 
@@ -69,6 +69,6 @@ export async function exportToCSV(history: any[], options: ExportOptions, projec
     console.error('Error al exportar CSV:', error);
     throw error;
   }
-  
+
   return false;
 }

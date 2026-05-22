@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { sim } from "$lib/stores/simulation.svelte";
+  import { sim } from "$lib/stores/simulation";
   import {
     createDustParticle,
     updateParticles,

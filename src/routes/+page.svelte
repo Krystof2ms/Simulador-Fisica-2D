@@ -4,7 +4,7 @@
   import Canvas from "$lib/components/Canvas/Canvas.svelte";
   import Controls from "$lib/components/Controls.svelte";
   import Stats from "$lib/components/Stats/Stats.svelte";
-  import { sim } from "$lib/stores/simulation.svelte";
+  import { sim } from "$lib/stores/simulation";
   import { onMount } from "svelte";
   import "$lib/styles/globals.css";
 
