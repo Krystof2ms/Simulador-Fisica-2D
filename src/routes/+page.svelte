@@ -5,12 +5,11 @@
   import Controls from "$lib/components/Controls.svelte";
   import Stats from "$lib/components/Stats/Stats.svelte";
   import { sim } from "$lib/stores/simulation";
+  import { settingsStore } from "$lib/stores/settings.svelte";
   import { onMount } from "svelte";
   import "$lib/styles/globals.css";
 
   let isDocked = $state(true);
-  let projectName = $state("Simulación de Terreno 01");
-
   // Auto-pause if window becomes hidden
   function handleVisibilityChange() {
     if (document.hidden) {
@@ -27,7 +26,7 @@
 </script>
 
 <svelte:head>
-  <title>{projectName} - TerraSim 2D</title>
+  <title>{settingsStore.proyectName} - TerraSim 2D</title>
   <meta
     name="description"
     content="Simulador físico 2D interactivo con deformación de relieve por puntos y fricción configurable por sección."
@@ -96,7 +95,7 @@
         </svg>
         <input
           type="text"
-          bind:value={projectName}
+          bind:value={settingsStore.proyectName}
           placeholder="Nombre del proyecto..."
           class="project-name-input"
         />
@@ -141,7 +140,7 @@
         <!-- Absolute Overlay: Stats sidebar if NOT docked and NOT collapsed -->
         {#if !isDocked}
           <div class="absolute top-4 right-4 bottom-4 z-20 drop-shadow-2xl">
-            <Stats bind:isDocked {projectName} />
+            <Stats bind:isDocked projectName={settingsStore.proyectName} />
           </div>
         {/if}
       </div>
@@ -153,7 +152,7 @@
     <!-- Right Telemetry Workspace (Sidebar Stats - Rendered inline if Docked) -->
     {#if isDocked}
       <div class="shrink-0 flex items-stretch select-none">
-        <Stats bind:isDocked {projectName} />
+        <Stats bind:isDocked projectName={settingsStore.proyectName} />
       </div>
     {/if}
   </section>
