@@ -145,6 +145,7 @@
             />
         </div>
 
+<!--
         <div class="flex flex-col gap-1.5">
             <div
                 class="flex items-center justify-between text-xs font-semibold text-slate-500"
@@ -168,7 +169,6 @@
                 class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
             />
         </div>
-
         <div class="flex flex-col gap-1.5">
             <div
                 class="flex items-center justify-between text-xs font-semibold text-slate-500"
@@ -237,6 +237,6 @@
                     )}
                 class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
             />
-        </div>
+        </div> -->
     </div>
 </div>

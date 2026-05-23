@@ -8,6 +8,7 @@
   import { settingsStore } from "$lib/stores/settings.svelte";
   import { onMount } from "svelte";
   import "$lib/styles/globals.css";
+  import ThemeSelector from "$lib/components/ThemeSelector.svelte";
 
   let isDocked = $state(true);
   // Auto-pause if window becomes hidden
@@ -119,6 +120,7 @@
               : "En pausa"}</span
         >
       </div>
+      <ThemeSelector />
     </div>
   </header>
 
