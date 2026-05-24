@@ -44,25 +44,21 @@
 </script>
 
 {#if editor.selectedSegmentIndex !== null}
-  {@const activeFriction =
-    sim.segments[editor.selectedSegmentIndex]?.friction ?? 0.9}
-  {@const activeAngleDeg =
-    sim.getSegmentAngleDegrees(editor.selectedSegmentIndex) ?? 0}
+  {@const activeFriction = sim.segments[editor.selectedSegmentIndex]?.friction ?? 0.9}
+  {@const activeAngleDeg = sim.getSegmentAngleDegrees(editor.selectedSegmentIndex) ?? 0}
 
-  <div class="p-3 rounded-xl border border-slate-200 bg-slate-50">
-    <div class="text-xs font-semibold text-slate-500">
-      Segmento seleccionado
-    </div>
-    <div class="text-sm font-bold text-slate-800 mt-1">
+  <div class="p-3 rounded-xl border border-border bg-secondary">
+    <div class="text-xs font-semibold text-muted-foreground">Segmento seleccionado</div>
+    <div class="text-sm font-bold text-foreground mt-1">
       Sección {editor.selectedSegmentIndex! + 1}
     </div>
   </div>
 
   <div class="flex flex-col gap-2">
     <div
-      class="flex items-center justify-between text-xs font-semibold text-slate-500"
+      class="flex items-center justify-between text-xs font-semibold text-muted-foreground"
     >
-      <span>Fricción</span><span class="font-mono text-slate-800"
+      <span>Fricción</span><span class="font-mono text-foreground"
         >{activeFriction.toFixed(2)} μ</span
       >
     </div>
@@ -73,7 +69,7 @@
       step="0.05"
       value={activeFriction}
       oninput={handleFrictionSlider}
-      class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-ew-resize accent-slate-900"
+      class="w-full h-2 bg-chart-4 rounded-lg appearance-none cursor-ew-resize accent-slate-900"
     />
     <div class="grid grid-cols-2 gap-2">
       {#each presets as pr}
@@ -81,7 +77,7 @@
           onclick={() => applyPreset(pr.value)}
           class="px-2 py-1 text-xs font-bold border rounded-lg {pr.color}
         {Math.abs(activeFriction - pr.value) < 0.01
-            ? 'ring-2 ring-slate-900 ring-offset-1'
+            ? 'ring-2 ring-foreground ring-offset-1'
             : ''}"
         >
           {pr.name}
@@ -91,13 +87,9 @@
   </div>
 
   <div class="flex flex-col gap-2">
-    <div
-      class="flex items-center justify-between text-xs font-semibold text-slate-500"
-    >
+    <div class="flex items-center justify-between text-xs font-semibold text-muted-foreground">
       <span>Ángulo con eje X</span>
-      <span class="font-mono text-slate-800"
-        >{activeAngleDeg.toFixed(1)}°</span
-      >
+      <span class="font-mono text-foreground">{activeAngleDeg.toFixed(1)}°</span>
     </div>
     <input
       type="number"
@@ -106,15 +98,15 @@
       step="0.5"
       value={activeAngleDeg.toFixed(1)}
       oninput={handleAngleInput}
-      class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
+      class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-border bg-secondary text-foreground"
     />
-    <div class="text-xs text-slate-500">
+    <div class="text-xs text-muted-foreground">
       Ajusta pendiente ascendente (+) o descendente (-).
     </div>
   </div>
 {:else if editor.activeTool == "friction"}
   <div
-    class="p-3 rounded-xl border border-slate-200 bg-sky-50 text-sky-800 text-xs font-semibold"
+    class="p-3 rounded-xl border-2 border-sidebar-primary/50 bg-sidebar text-sidebar-primary text-xs font-semibold"
   >
     Selecciona un segmento en el canvas para editar fricción y ángulo.
   </div>
