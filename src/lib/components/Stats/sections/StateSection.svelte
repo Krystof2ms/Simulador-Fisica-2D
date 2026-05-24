@@ -91,7 +91,7 @@
     label="Contacto de Terreno"
   >
     <div
-      class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-1"
+      class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-border pb-1"
     >
       <span>Pendiente</span>
       <span class="font-mono text-foreground font-extrabold">{slopeAngle} °</span

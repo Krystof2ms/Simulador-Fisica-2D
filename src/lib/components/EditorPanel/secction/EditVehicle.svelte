@@ -1,179 +1,154 @@
 <script lang="ts">
-    import { sim, editor } from "$lib/stores/simulation";
+  import { sim, editor } from "$lib/stores/simulation";
 
-    function updateVehicleMass(e: Event) {
-        const value = parseFloat((e.target as HTMLInputElement).value);
-        if (Number.isNaN(value)) return;
-        const nextMass = Math.max(1, value);
-        sim.vehicle = { ...sim.vehicle, mass: nextMass };
-        sim.initialVehicleState = { ...sim.initialVehicleState, mass: nextMass };
-    }
+  function updateVehicleMass(e: Event) {
+    const value = parseFloat((e.target as HTMLInputElement).value);
+    if (Number.isNaN(value)) return;
+    const nextMass = Math.max(1, value);
+    sim.vehicle = { ...sim.vehicle, mass: nextMass };
+    sim.initialVehicleState = { ...sim.initialVehicleState, mass: nextMass };
+  }
 
-    function updateConfigNumber(
-        key:
-            | "propulsionForce"
-            | "propulsionOscillation"
-            | "propulsionFrequencyHz"
-            | "propulsionDropFactor"
-            | "drag"
-            | "gravity",
-        value: number,
-    ) {
-        if (Number.isNaN(value)) return;
-        sim.config = { ...sim.config, [key]: value };
-    }
+  function updateConfigNumber(
+    key:
+      | "propulsionForce"
+      | "propulsionOscillation"
+      | "propulsionFrequencyHz"
+      | "propulsionDropFactor"
+      | "drag"
+      | "gravity",
+    value: number,
+  ) {
+    if (Number.isNaN(value)) return;
+    sim.config = { ...sim.config, [key]: value };
+  }
 
-    function updateInitialX(e: Event) {
-        const value = parseFloat((e.target as HTMLInputElement).value);
-        if (Number.isNaN(value)) return;
-        sim.setInitialVehiclePosition(value, sim.initialVehicleState.position.y);
-    }
+  function updateInitialX(e: Event) {
+    const value = parseFloat((e.target as HTMLInputElement).value);
+    if (Number.isNaN(value)) return;
+    sim.setInitialVehiclePosition(value, sim.initialVehicleState.position.y);
+  }
 
-    function updateInitialY(e: Event) {
-        const value = parseFloat((e.target as HTMLInputElement).value);
-        if (Number.isNaN(value)) return;
-        sim.setInitialVehiclePosition(sim.initialVehicleState.position.x, value);
-    }
+  function updateInitialY(e: Event) {
+    const value = parseFloat((e.target as HTMLInputElement).value);
+    if (Number.isNaN(value)) return;
+    sim.setInitialVehiclePosition(sim.initialVehicleState.position.x, value);
+  }
 
-    function toggleStartPositionEditMode() {
-        editor.startPositionEditMode = !editor.startPositionEditMode;
-        if (editor.startPositionEditMode) {
-            editor.clearSelection();
-        }
+  function toggleStartPositionEditMode() {
+    editor.startPositionEditMode = !editor.startPositionEditMode;
+    if (editor.startPositionEditMode) {
+      editor.clearSelection();
     }
+  }
 </script>
 
 <div>
-    <div class="flex items-center justify-between">
-        <h3 class="text-xs font-extrabold text-slate-700 tracking-wide uppercase">
-            Carro
-        </h3>
-        <span class="text-[11px] font-mono text-slate-500">Física</span>
+  <div class="flex items-center justify-between mb-1">
+    <h3 class="text-xs font-extrabold text-foreground tracking-wide uppercase">Carro</h3>
+    <span class="text-xs font-mono text-muted-foreground">Física</span>
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-1.5">
+      <button
+        onclick={toggleStartPositionEditMode}
+        class="w-full px-3 py-2 rounded-lg border text-sm font-semibold transition-colors cursor-pointer
+          {editor.startPositionEditMode
+          ? 'bg-chart-2 text-background border-chart-3'
+          : 'bg-secondary text-muted-foreground border-border hover:bg-secondary/50'}"
+      >
+        {editor.startPositionEditMode
+          ? "Modo mover inicio: ACTIVO"
+          : "Modo mover inicio: INACTIVO"}
+      </button>
     </div>
 
-    <div class="flex flex-col gap-3">
-        <div class="flex flex-col gap-1.5">
-            <button
-                onclick={toggleStartPositionEditMode}
-                class="w-full px-3 py-2 rounded-lg border text-sm font-semibold transition-colors cursor-pointer
-          {editor.startPositionEditMode
-                    ? 'bg-cyan-600 text-white border-cyan-700'
-                    : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'}"
-            >
-                {editor.startPositionEditMode
-                    ? "Modo mover inicio: ACTIVO"
-                    : "Modo mover inicio: INACTIVO"}
-            </button>
-        </div>
+    <div class="input-group">
+      <div>
+        <span class="title">Posición inicial X</span>
+        <span class="value">{sim.initialVehicleState.position.x.toFixed(0)} px</span>
+      </div>
+      <input
+        type="number"
+        min="0"
+        max="1400"
+        step="1"
+        value={sim.initialVehicleState.position.x}
+        oninput={updateInitialX}
+      />
+    </div>
 
-        <div class="flex flex-col gap-1.5">
-            <div
-                class="flex items-center justify-between text-xs font-semibold text-slate-500"
-            >
-                <span>Posición inicial X</span>
-                <span class="font-mono text-slate-800"
-                    >{sim.initialVehicleState.position.x.toFixed(0)} px</span
-                >
-            </div>
-            <input
-                type="number"
-                min="0"
-                max="1400"
-                step="1"
-                value={sim.initialVehicleState.position.x}
-                oninput={updateInitialX}
-                class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
-            />
-        </div>
+    <div class="input-group">
+      <div>
+        <span class="title">Posición inicial Y</span>
+        <span class="value">{sim.initialVehicleState.position.y.toFixed(0)} px</span>
+      </div>
+      <input
+        type="number"
+        min="0"
+        max="510"
+        step="1"
+        value={sim.initialVehicleState.position.y}
+        oninput={updateInitialY}
+      />
+    </div>
 
-        <div class="flex flex-col gap-1.5">
-            <div
-                class="flex items-center justify-between text-xs font-semibold text-slate-500"
-            >
-                <span>Posición inicial Y</span>
-                <span class="font-mono text-slate-800"
-                    >{sim.initialVehicleState.position.y.toFixed(0)} px</span
-                >
-            </div>
-            <input
-                type="number"
-                min="0"
-                max="510"
-                step="1"
-                value={sim.initialVehicleState.position.y}
-                oninput={updateInitialY}
-                class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
-            />
-        </div>
+    <div class="input-group">
+      <div>
+        <span class="title">Peso (masa)</span>
+        <span class="value font-mono text-slate-800"
+          >{sim.vehicle.mass.toFixed(0)} kg</span
+        >
+      </div>
+      <input
+        type="number"
+        min="1"
+        step="10"
+        value={sim.vehicle.mass}
+        oninput={updateVehicleMass}
+      />
+    </div>
 
-        <div class="flex flex-col gap-1.5">
-            <div
-                class="flex items-center justify-between text-xs font-semibold text-slate-500"
-            >
-                <span>Peso (masa)</span>
-                <span class="font-mono text-slate-800"
-                    >{sim.vehicle.mass.toFixed(0)} kg</span
-                >
-            </div>
-            <input
-                type="number"
-                min="1"
-                step="10"
-                value={sim.vehicle.mass}
-                oninput={updateVehicleMass}
-                class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
-            />
-        </div>
+    <div class="input-group">
+      <div>
+        <span class="title">Gravedad</span>
+        <span class="value">{(sim.config.gravity / 30).toFixed(2)} m/s²</span>
+      </div>
+      <input
+        type="number"
+        min="-100"
+        max="100"
+        step="0.1"
+        value={sim.config.gravity / 30}
+        oninput={(e) =>
+          updateConfigNumber(
+            "gravity",
+            parseFloat((e.target as HTMLInputElement).value) * 30,
+          )}
+      />
+    </div>
 
-        <div class="flex flex-col gap-1.5">
-            <div
-                class="flex items-center justify-between text-xs font-semibold text-slate-500"
-            >
-                <span>Gravedad</span>
-                <span class="font-mono text-slate-800"
-                    >{(sim.config.gravity / 30).toFixed(2)} m/s²</span
-                >
-            </div>
-            <input
-                type="number"
-                min="-100"
-                max="100"
-                step="0.1"
-                value={sim.config.gravity / 30}
-                oninput={(e) =>
-                    updateConfigNumber(
-                        "gravity",
-                        parseFloat((e.target as HTMLInputElement).value) * 30,
-                    )}
-                class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
-            />
-        </div>
+    <div class="input-group">
+      <div>
+        <span class="title">Fuerza impulsora</span>
+        <span class="value">{sim.config.propulsionForce.toFixed(0)} N</span>
+      </div>
+      <input
+        type="number"
+        min="0"
+        max="20000"
+        step="10"
+        value={sim.config.propulsionForce}
+        oninput={(e) =>
+          updateConfigNumber(
+            "propulsionForce",
+            parseFloat((e.target as HTMLInputElement).value),
+          )}
+      />
+    </div>
 
-        <div class="flex flex-col gap-1.5">
-            <div
-                class="flex items-center justify-between text-xs font-semibold text-slate-500"
-            >
-                <span>Fuerza impulsora</span>
-                <span class="font-mono text-slate-800"
-                    >{sim.config.propulsionForce.toFixed(0)} N</span
-                >
-            </div>
-            <input
-                type="number"
-                min="0"
-                max="20000"
-                step="10"
-                value={sim.config.propulsionForce}
-                oninput={(e) =>
-                    updateConfigNumber(
-                        "propulsionForce",
-                        parseFloat((e.target as HTMLInputElement).value),
-                    )}
-                class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
-            />
-        </div>
-
-<!--
+    <!--
         <div class="flex flex-col gap-1.5">
             <div
                 class="flex items-center justify-between text-xs font-semibold text-slate-500"
@@ -266,5 +241,25 @@
                 class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
             />
         </div> -->
-    </div>
+  </div>
 </div>
+
+<style>
+  @reference "#globals.css";
+
+  .input-group {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .input-group div {
+    @apply flex items-center justify-between text-xs font-semibold text-muted-foreground;
+  }
+
+  .input-group input {
+    @apply w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-border bg-background/25 text-foreground;
+  }
+
+  .input-group .value {
+    @apply font-mono text-foreground;
+  }
+</style>

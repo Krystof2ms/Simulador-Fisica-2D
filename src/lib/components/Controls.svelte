@@ -28,7 +28,7 @@
 </script>
 
 <div
-  class="w-full flex items-center justify-between gap-4 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm"
+  class="w-full flex items-center justify-between gap-4 bg-card backdrop-blur-md p-4 rounded-2xl border-2 border-border shadow-sm"
 >
   <div class="flex items-center gap-3">
     <!-- Play/Pause Button -->
@@ -37,7 +37,7 @@
       disabled={sim.isFinished}
       class="w-12 h-12 flex items-center justify-center rounded-xl font-bold cursor-pointer transition-all focus:outline-none shadow-md hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 {sim.isPlaying
         ? 'bg-rose-500 text-white hover:bg-rose-600 active:bg-rose-700'
-        : 'bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700'}"
+        : 'bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80'}"
       title={sim.isFinished
         ? "Simulación terminada (Reinicie para volver a empezar)"
         : sim.isPlaying
@@ -55,11 +55,7 @@
         </svg>
       {:else}
         <!-- Play Icon -->
-        <svg
-          class="w-5 h-5 translate-x-0.5"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg class="w-5 h-5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M8 5v14l11-7z" />
         </svg>
       {/if}
@@ -68,7 +64,7 @@
     <!-- Reset Button -->
     <button
       onclick={handleReset}
-      class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 border border-slate-200 cursor-pointer transition-all focus:outline-none shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+      class="w-10 h-10 flex items-center justify-center rounded-xl bg-border/50 hover:bg-border/40 active:bg-border/30 text-muted-foreground border border-border cursor-pointer transition-all focus:outline-none shadow-sm hover:scale-[1.02] active:scale-[0.98]"
       title="Reiniciar móvil al inicio"
     >
       <svg
@@ -90,9 +86,7 @@
       onclick={handleFinish}
       disabled={sim.isFinished}
       class="px-3 h-10 flex items-center justify-center rounded-xl bg-indigo-100 hover:bg-indigo-200 active:bg-indigo-300 text-indigo-800 border border-indigo-200 cursor-pointer transition-all focus:outline-none shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-      title={sim.isFinished
-        ? "La simulación ya ha finalizado"
-        : "Finalizar simulación"}
+      title={sim.isFinished ? "La simulación ya ha finalizado" : "Finalizar simulación"}
     >
       Finalizar
     </button>
@@ -101,7 +95,7 @@
   <!-- Timeline scrub slider -->
   <div class="flex-1 flex flex-col gap-1.5 px-3">
     <div
-      class="flex items-center justify-between text-[11px] text-slate-400 font-bold font-mono"
+      class="flex items-center justify-between text-xs text-muted-foreground font-bold font-mono"
     >
       {#each timelineLabels as label}
         <span>{label.toFixed(2)}s</span>
@@ -116,23 +110,23 @@
         step={sim.config.fixedDt}
         value={sim.time}
         oninput={handleTimelineScrub}
-        class="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-ew-resize accent-slate-800 focus:outline-none"
+        class="w-full h-2.5 bg-primary/40 rounded-lg appearance-none cursor-ew-resize accent-slate-800 focus:outline-none"
       />
     </div>
   </div>
 
   <!-- Telemetry timer text -->
   <div
-    class="px-5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 shadow-inner flex flex-col justify-center items-end shrink-0"
+    class="px-5 py-2.5 rounded-xl border border-border bg-background shadow-inner flex flex-col justify-center items-end shrink-0"
   >
     <span
-      class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none"
+      class="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-none"
     >
       {sim.isFinished ? "Terminada" : "Tiempo"}
     </span>
-    <span class="text-sm font-extrabold text-slate-800 font-mono mt-0.5">
+    <span class="text-sm font-extrabold text-muted-foreground font-mono mt-0.5">
       t = {sim.time.toFixed(2)}s
-      <span class="text-xs text-slate-400 font-normal"
+      <span class="text-xs text-muted-foreground font-normal"
         >/ {sim.maxTime.toFixed(2)}s</span
       >
     </span>

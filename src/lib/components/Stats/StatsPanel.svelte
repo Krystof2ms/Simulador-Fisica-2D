@@ -29,7 +29,7 @@
 </script>
 
 <div
-  class="relative h-full flex items-stretch transition-all duration-300 ease-out select-none bg-card {isCollapsed
+  class="relative h-full flex items-stretch transition-all duration-300 ease-out select-none bg-card border-3 border-border rounded-2xl {isCollapsed
     ? 'w-0'
     : 'w-107.5'} {!isDocked && !isCollapsed
     ? 'absolute top-0 right-2 z-20 drop-shadow-2xl'
@@ -38,7 +38,7 @@
   <!-- Collapse toggle -->
   <button
     onclick={toggleCollapse}
-    class="absolute -left-6.5 top-6 w-6.5 h-14 bg-slate-900 border-y border-l border-slate-700/80 hover:bg-slate-800 text-white rounded-l-xl flex items-center justify-center transition-all cursor-pointer focus:outline-none shadow-md z-30"
+    class="absolute -left-6.5 top-6 w-6.5 h-14 bg-foreground border-y border-l border-border/80 hover:bg-foreground/70 text-background rounded-l-xl flex items-center justify-center transition-all cursor-pointer focus:outline-none shadow-md z-30"
     title={isCollapsed ? "Desplegar Panel" : "Colapsar Panel"}
   >
     {#if isCollapsed}
@@ -78,15 +78,15 @@
     >
       <!-- Header -->
       <div
-        class="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50"
+        class="flex items-center justify-between p-4 border-b border-border bg-card/50"
       >
         <div class="flex flex-col">
           <span
-            class="text-xs font-bold text-slate-400 uppercase tracking-widest leading-none"
+            class="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-none"
           >
             Telemetría
           </span>
-          <span class="text-base font-extrabold text-slate-800 mt-1"
+          <span class="text-base font-extrabold text-foreground mt-1"
             >Estado de Dinámica</span
           >
         </div>
@@ -96,8 +96,8 @@
           aria-label={isDocked ? "Desanclar Panel" : "Anclar Panel"}
           title={isDocked ? "Desanclar Panel" : "Anclar Panel"}
           class="p-2 rounded-lg border transition-all cursor-pointer focus:outline-none {isDocked
-            ? 'bg-slate-900 border-slate-800 text-white shadow-sm'
-            : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-700'}"
+            ? 'bg-foreground border-border/80 text-background shadow-sm'
+            : 'bg-background border-border text-muted-foreground hover:bg-background/60 hover:text-muted-foreground'}"
         >
           <svg
             class="w-4 h-4 rotate-45"
@@ -117,7 +117,7 @@
 
       <!-- Tab bar -->
       <div
-        class="flex gap-1 p-2 bg-muted/90 border-b border-slate-200 text-sm font-semibold"
+        class="flex gap-1 p-2 bg-sidebar-accent border-b border-border text-sm font-semibold"
       >
         {#each tabs as tab}
           <button onclick={() => (activeTab = tab.id)} data-state={activeTab === tab.id ? 'active' : 'inactive'} class="flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-xl px-3 py-1.5 text-sm font-medium ring-offset-background cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow text-slate-500 hover:bg-slate-200/50 hover:text-slate-700">{tab.label}</button>
@@ -137,7 +137,7 @@
 
       <!-- Status footer -->
       <div
-        class="p-3 bg-card-50 border-t border-slate-100 text-xs font-semibold text-muted-foreground flex items-center justify-between"
+        class="p-3 bg-card-50 border-t border-border text-xs font-semibold text-muted-foreground flex items-center justify-between"
       >
         <span class="flex items-center gap-1.5">
           <span
@@ -153,7 +153,7 @@
               ? "Simulación Terminada"
               : "Simulación Pausada"}
         </span>
-        <span class="font-mono text-[10px] text-slate-400 font-bold uppercase">v1.2</span>
+        <span class="font-mono text-[10px] text-muted-foreground font-bold uppercase">v1.2</span>
       </div>
     </div>
   {/if}

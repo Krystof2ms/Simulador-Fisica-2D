@@ -33,25 +33,32 @@
       isExporting = false;
     }
   }
+
+  const options = [
+    { key: "distance" as const, label: "Distancia y Posición" },
+    { key: "velocity" as const, label: "Velocidad (X, Y, Total)" },
+    { key: "acceleration" as const, label: "Aceleración (X, Y, Neta)" },
+    { key: "friction" as const, label: "Fricción y Pendiente" },
+  ];
 </script>
 
 <div class="flex flex-col gap-4">
   <!-- Checkbox options -->
-  <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 shadow-inner">
+  <div class="p-4 bg-background rounded-xl border-2 border-border shadow-inner">
     <span
-      class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-3"
+      class="text-xs font-bold text-muted-foreground uppercase tracking-widest block mb-3"
     >
       Series a Exportar
     </span>
     <div class="flex flex-col gap-3">
-      {#each [{ key: "distance" as const, label: "Distancia y Posición" }, { key: "velocity" as const, label: "Velocidad (X, Y, Total)" }, { key: "acceleration" as const, label: "Aceleración (X, Y, Neta)" }, { key: "friction" as const, label: "Fricción y Pendiente" }] as option}
+      {#each options as option}
         <label
-          class="flex items-center gap-3 text-sm font-semibold text-slate-700 cursor-pointer"
+          class="flex items-center gap-3 text-sm font-semibold text-muted-foreground/80 cursor-pointer"
         >
           <input
             type="checkbox"
             bind:checked={exportOptions[option.key]}
-            class="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+            class="w-4 h-4 rounded border-border text-cyan-600 focus:ring-cyan-500"
           />
           {option.label}
         </label>
@@ -64,7 +71,7 @@
     <button
       onclick={handleExport}
       disabled={sim.history.length === 0 || isExporting}
-      class="w-full py-3 px-4 bg-slate-900 text-white rounded-xl font-bold text-sm shadow-md hover:bg-slate-800 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      class="w-full py-3 px-4 bg-foreground text-background rounded-xl font-bold text-sm shadow-md hover:bg-foreground/90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
       {#if isExporting}
         <svg
@@ -135,9 +142,9 @@
       </div>
     {/if}
 
-    <p class="text-[11px] text-slate-400 font-medium leading-relaxed px-1">
-      Seleccione los datos que desea incluir en el archivo CSV. El archivo
-      incluirá una fila por cada paso de tiempo de la simulación.
+    <p class="text-xs text-muted-foreground font-medium leading-relaxed px-1">
+      Seleccione los datos que desea incluir en el archivo CSV. El archivo incluirá una
+      fila por cada paso de tiempo de la simulación.
     </p>
   </div>
 </div>

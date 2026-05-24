@@ -36,6 +36,6 @@
     "@tauri-apps/cli": "^2"
   },
   "imports": {
-    "#globals.css": "src/lib/styless/globals.css"
+    "#globals.css": "./src/lib/styles/globals.css"
   }
 }

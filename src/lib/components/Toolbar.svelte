@@ -46,12 +46,12 @@
 </script>
 
 <div
-  class="w-full flex flex-col gap-4 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300"
+  class="w-full flex flex-col gap-4 bg-background backdrop-blur-md p-4 rounded-2xl border-2 border-border shadow-sm transition-all duration-300"
 >
   <div class="flex flex-wrap items-center justify-between gap-4">
     <!-- Left: Tool selector -->
     <div
-      class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200"
+      class="flex items-center gap-1.5 bg-sidebar-accent p-1 rounded-xl border border-border"
     >
       {#each tools as tool}
         {@const isActive = editor.activeTool === tool.id}
@@ -59,10 +59,10 @@
           onclick={() => setTool(tool.id)}
           disabled={sim.isPlaying}
           class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {isActive
-            ? 'bg-slate-900 text-white shadow-md scale-[1.02]'
+            ? 'bg-foreground text-background shadow-md scale-[1.02]'
             : sim.isPlaying
-              ? 'text-slate-400 cursor-not-allowed'
-              : 'text-slate-600 hover:bg-slate-200 hover:text-slate-800'}"
+              ? 'text-muted-foreground/50 cursor-not-allowed'
+              : 'text-muted-foreground hover:bg-muted-foreground/20 hover:text-foreground'}"
           title={tool.desc}
         >
           <!-- svelte-ignore state_referenced_locally -->
@@ -78,10 +78,10 @@
         }}
         disabled={sim.isPlaying}
         class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {editor.startPositionEditMode
-          ? 'bg-cyan-600 text-white shadow-md scale-[1.02]'
+          ? 'bg-chart-2 text-background shadow-md scale-[1.02]'
           : sim.isPlaying
-            ? 'text-slate-400 cursor-not-allowed'
-            : 'text-slate-600 hover:bg-slate-200 hover:text-slate-800'}"
+            ? 'text-muted-foreground/50 cursor-not-allowed'
+            : 'text-muted-foreground hover:bg-muted-foreground/20 hover:text-foreground'}"
         title="Activa arrastre del punto de inicio del móvil"
       >
         <svg
@@ -106,7 +106,7 @@
       <button
         onclick={() => sim.resetTerrainToDefault()}
         disabled={sim.isPlaying}
-        class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-rose-600 border border-rose-200 bg-rose-50/50 hover:bg-rose-100 hover:text-rose-700 active:bg-rose-200 rounded-xl transition-all cursor-pointer focus:outline-none shadow-sm"
+        class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-rose-600 border border-destructive bg-muted-foreground/20 hover:bg-destructive-foreground hover:text-destructive active:bg-destructive-foreground active:text-destructive rounded-xl transition-all cursor-pointer focus:outline-none shadow-sm"
       >
         <svg
           class="w-4 h-4"
@@ -127,11 +127,9 @@
   </div>
 
   <!-- Description of active tool -->
-  <div
-    class="text-xs text-slate-500 font-medium px-1 flex items-center gap-1.5"
-  >
+  <div class="text-xs text-slate-500 font-medium px-1 flex items-center gap-1.5">
     <svg
-      class="w-3.5 h-3.5 text-slate-400 shrink-0"
+      class="w-3.5 h-3.5 text-sidebar-ring shrink-0"
       fill="none"
       stroke="currentColor"
       stroke-width="2.5"

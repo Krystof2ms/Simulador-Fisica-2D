@@ -126,7 +126,7 @@
   bind:this={container}
 >
   {#if history.length <= 1}
-    <div class="text-xs font-semibold text-slate-400 text-center px-4">
+    <div class="text-xs font-semibold text-muted-foreground/10 text-center px-4">
       Inicia la simulación para registrar y graficar series.
     </div>
   {/if}
