@@ -10,7 +10,7 @@
     },
     {
       id: "friction",
-      label: "Fricción",
+      label: "Secmento",
       icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`,
       desc: "Pincha un segmento en el canvas para configurar su rozamiento.",
     },
@@ -35,8 +35,13 @@
   ];
 
   function setTool(toolId: ToolType) {
+    if (editor.activeTool === toolId) {
+      editor.clearSelection();
+      return;
+    }
     editor.activeTool = toolId;
     editor.startPositionEditMode = false;
+    editor.clearSelection();
   }
 </script>
 
@@ -67,7 +72,10 @@
       {/each}
 
       <button
-        onclick={() => (editor.startPositionEditMode = !editor.startPositionEditMode)}
+        onclick={() => {
+          editor.startPositionEditMode = !editor.startPositionEditMode;
+          if (editor.startPositionEditMode) editor.clearSelection();
+        }}
         disabled={sim.isPlaying}
         class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none {editor.startPositionEditMode
           ? 'bg-cyan-600 text-white shadow-md scale-[1.02]'

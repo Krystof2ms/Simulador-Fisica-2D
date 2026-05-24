@@ -8,7 +8,7 @@ export const DEFAULT_CONFIG = {
     propulsionFrequencyHz: 0,
     propulsionDropFactor: 0,
     drag: 0.0,
-    friction: 0.9,
+    friction: 0.0,
     fixedDt: 1 / 60,
     snapDistance: 15
 };

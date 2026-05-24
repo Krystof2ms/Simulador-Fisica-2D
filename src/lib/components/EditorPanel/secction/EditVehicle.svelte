@@ -4,7 +4,7 @@
     function updateVehicleMass(e: Event) {
         const value = parseFloat((e.target as HTMLInputElement).value);
         if (Number.isNaN(value)) return;
-        const nextMass = Math.max(50, value);
+        const nextMass = Math.max(1, value);
         sim.vehicle = { ...sim.vehicle, mass: nextMass };
         sim.initialVehicleState = { ...sim.initialVehicleState, mass: nextMass };
     }
@@ -15,7 +15,8 @@
             | "propulsionOscillation"
             | "propulsionFrequencyHz"
             | "propulsionDropFactor"
-            | "drag",
+            | "drag"
+            | "gravity",
         value: number,
     ) {
         if (Number.isNaN(value)) return;
@@ -36,6 +37,9 @@
 
     function toggleStartPositionEditMode() {
         editor.startPositionEditMode = !editor.startPositionEditMode;
+        if (editor.startPositionEditMode) {
+            editor.clearSelection();
+        }
     }
 </script>
 
@@ -113,10 +117,34 @@
             </div>
             <input
                 type="number"
-                min="50"
+                min="1"
                 step="10"
                 value={sim.vehicle.mass}
                 oninput={updateVehicleMass}
+                class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
+            />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <div
+                class="flex items-center justify-between text-xs font-semibold text-slate-500"
+            >
+                <span>Gravedad</span>
+                <span class="font-mono text-slate-800"
+                    >{(sim.config.gravity / 30).toFixed(2)} m/s²</span
+                >
+            </div>
+            <input
+                type="number"
+                min="-100"
+                max="100"
+                step="0.1"
+                value={sim.config.gravity / 30}
+                oninput={(e) =>
+                    updateConfigNumber(
+                        "gravity",
+                        parseFloat((e.target as HTMLInputElement).value) * 30,
+                    )}
                 class="w-full px-2.5 py-1.5 text-sm font-mono rounded-lg border border-slate-300 bg-white text-slate-800"
             />
         </div>
