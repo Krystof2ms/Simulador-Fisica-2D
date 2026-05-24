@@ -74,7 +74,7 @@
 
   {#if !isCollapsed}
     <div
-      class="w-107.5 bg-white border border-slate-200 rounded-2xl flex flex-col items-stretch shadow-lg overflow-hidden animate-in fade-in slide-in-from-right-4 duration-300"
+      class="w-107.5 bg-card rounded-2xl flex flex-col items-stretch shadow-lg overflow-hidden animate-in fade-in slide-in-from-right-4 duration-300"
     >
       <!-- Header -->
       <div
@@ -117,18 +117,10 @@
 
       <!-- Tab bar -->
       <div
-        class="grid grid-cols-3 p-2 bg-muted border-b border-slate-200 text-sm font-semibold"
+        class="flex gap-1 p-2 bg-muted/90 border-b border-slate-200 text-sm font-semibold"
       >
         {#each tabs as tab}
-          <button
-            onclick={() => (activeTab = tab.id)}
-            class="py-1.5 rounded-lg transition-all cursor-pointer focus:outline-none {activeTab ===
-            tab.id
-              ? 'bg-white text-slate-900 shadow-sm'
-              : 'text-slate-500 hover:bg-slate-200/50 hover:text-slate-700'}"
-          >
-            {tab.label}
-          </button>
+          <button onclick={() => (activeTab = tab.id)} data-state={activeTab === tab.id ? 'active' : 'inactive'} class="flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-xl px-3 py-1.5 text-sm font-medium ring-offset-background cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow text-slate-500 hover:bg-slate-200/50 hover:text-slate-700">{tab.label}</button>
         {/each}
       </div>
 
@@ -145,7 +137,7 @@
 
       <!-- Status footer -->
       <div
-        class="p-3 bg-slate-50 border-t border-slate-100 text-xs font-semibold text-slate-500 flex items-center justify-between"
+        class="p-3 bg-card-50 border-t border-slate-100 text-xs font-semibold text-muted-foreground flex items-center justify-between"
       >
         <span class="flex items-center gap-1.5">
           <span
@@ -161,9 +153,7 @@
               ? "Simulación Terminada"
               : "Simulación Pausada"}
         </span>
-        <span class="font-mono text-[10px] text-slate-400 font-bold uppercase"
-          >v1.2</span
-        >
+        <span class="font-mono text-[10px] text-slate-400 font-bold uppercase">v1.2</span>
       </div>
     </div>
   {/if}

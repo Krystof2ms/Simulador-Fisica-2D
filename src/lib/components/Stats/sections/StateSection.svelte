@@ -41,13 +41,13 @@
   <!-- Posición -->
   <MetricCard label="Posición (x, y)">
     <div class="flex items-baseline justify-between">
-      <span class="text-sm font-bold text-slate-600">
-        X: <span class="text-base font-extrabold text-slate-900 font-mono"
+      <span class="text-sm font-bold text-muted-foreground">
+        X: <span class="text-base font-extrabold text-foreground font-mono"
           >{posX}</span
         > m
       </span>
-      <span class="text-sm font-bold text-slate-600">
-        Y: <span class="text-base font-extrabold text-slate-900 font-mono"
+      <span class="text-sm font-bold text-muted-foreground">
+        Y: <span class="text-base font-extrabold text-foreground  font-mono"
           >{posY}</span
         > m
       </span>
@@ -87,28 +87,24 @@
   />
 
   <!-- Contacto de Terreno -->
-  <div
-    class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col gap-1.5 shadow-inner"
+  <MetricCard
+    label="Contacto de Terreno"
   >
-    <span
-      class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
-    >
-      Contacto de Terreno
-    </span>
     <div
       class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-1"
     >
       <span>Pendiente</span>
-      <span class="font-mono text-slate-800 font-extrabold">{slopeAngle} °</span
+      <span class="font-mono text-foreground font-extrabold">{slopeAngle} °</span
       >
     </div>
     <div
       class="flex items-center justify-between text-xs font-bold text-slate-500 pt-0.5"
     >
       <span>Fricción</span>
-      <span class="font-mono text-slate-800 font-extrabold"
+      <span class="font-mono text-foreground font-extrabold"
         >{surfaceFriction}</span
       >
     </div>
-  </div>
+  </MetricCard>
+
 </div>

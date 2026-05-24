@@ -1,15 +1,17 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
+
   interface Props {
     label: string;
-    children?: import("svelte").Snippet;
+    children?: Snippet;
   }
   let { label, children }: Props = $props();
 </script>
 
 <div
-  class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col gap-1 shadow-inner"
+  class="p-3 bg-background/40 rounded-xl border-2 border-border flex flex-col gap-1 shadow-inner"
 >
-  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+  <span class="text-xs font-bold text-foreground uppercase tracking-widest">
     {label}
   </span>
   {@render children?.()}
