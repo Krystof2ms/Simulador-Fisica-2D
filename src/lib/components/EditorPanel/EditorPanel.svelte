@@ -5,7 +5,7 @@
 </script>
 
 <aside
-  class="w-full xl:w-65 h-full shrink-0 bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 overflow-y-auto"
+  class="w-full xl:w-65 h-full shrink-0 bg-card backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 overflow-y-auto"
 >
   <fieldset disabled={sim.isPlaying} class="contents disabled:opacity-60">
     <div class="flex items-center justify-between">

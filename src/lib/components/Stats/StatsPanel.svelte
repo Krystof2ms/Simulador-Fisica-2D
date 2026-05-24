@@ -29,7 +29,7 @@
 </script>
 
 <div
-  class="relative h-full flex items-stretch transition-all duration-300 ease-out select-none {isCollapsed
+  class="relative h-full flex items-stretch transition-all duration-300 ease-out select-none bg-card {isCollapsed
     ? 'w-0'
     : 'w-107.5'} {!isDocked && !isCollapsed
     ? 'absolute top-0 right-2 z-20 drop-shadow-2xl'
@@ -117,7 +117,7 @@
 
       <!-- Tab bar -->
       <div
-        class="grid grid-cols-3 p-2 bg-slate-100 border-b border-slate-200 text-sm font-semibold"
+        class="grid grid-cols-3 p-2 bg-muted border-b border-slate-200 text-sm font-semibold"
       >
         {#each tabs as tab}
           <button

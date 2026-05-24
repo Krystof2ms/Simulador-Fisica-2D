@@ -34,7 +34,7 @@
   />
 </svelte:head>
 
-<div class="h-screen w-full bg-slate-50/60">
+<div class="h-screen w-full bg-background">
   <main
     class="p-2 md:p-3 flex flex-col items-center justify-start antialiased font-sans select-none overflow-hidden"
   >
