@@ -153,7 +153,7 @@
               ? "Simulación Terminada"
               : "Simulación Pausada"}
         </span>
-        <span class="font-mono text-[10px] text-muted-foreground font-bold uppercase">v1.2</span>
+        <span class="font-mono text-x text-muted-foreground font-bold uppercase">v1.2</span>
       </div>
     </div>
   {/if}

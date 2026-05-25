@@ -46,7 +46,7 @@
 
   <div class="flex-1 flex flex-col justify-between h-full py-1">
     <div class="flex flex-col">
-      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+      <span class="text-x font-bold text-slate-400 uppercase tracking-widest">
         Gráfico de Serie
       </span>
       <span class="text-xs text-slate-500 mt-1 leading-normal font-semibold">

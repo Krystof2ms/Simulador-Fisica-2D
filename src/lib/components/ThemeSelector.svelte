@@ -34,7 +34,7 @@
 
 <div class="flex items-center gap-2 text-xs text-muted-foreground">
   <button
-    class="h-8 w-8 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground grid place-content-center focus:outline-none rounded-lg"
+    class="h-8 w-full px-2 py-4 flex items-center gap-2 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none rounded-lg"
     onclick={toggleTheme}
     aria-label="Cambiar tema"
   >
@@ -43,5 +43,12 @@
     {:else}
       <Sun size={24} />
     {/if}
+    <span>
+      {#if settingsStore.theme === "light"}
+        Claro
+      {:else}
+        Oscuro
+      {/if}
+    </span>
   </button>
 </div>

@@ -3,10 +3,11 @@
   import { sim } from "$lib/stores/simulation";
   import { Car } from "lucide-svelte";
   import ThemeSelector from "./ThemeSelector.svelte";
+  import Selector from "./OptionsSelector/Selector.svelte";
 </script>
 
 <header
-  class="w-full shrink-0 flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-card backdrop-blur-md px-6 py-4 rounded-2xl border-2 border-border shadow-sm transition-all duration-300"
+  class="relative z-50 w-full shrink-0 flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-card backdrop-blur-md px-6 py-4 rounded-2xl border-2 border-border shadow-sm transition-all duration-300"
 >
   <div class="flex items-center gap-3.5">
     <!-- Logo vehicle badge -->
@@ -74,7 +75,7 @@
             : "En pausa"}</span
       >
     </div>
-    <ThemeSelector />
+    <Selector />
   </div>
 </header>
 

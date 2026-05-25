@@ -1,6 +1,6 @@
 <script lang="ts">
   import { sim } from "$lib/stores/simulation";
-  import { exportToCSV, type ExportOptions } from "$lib/utils/export";
+  import { exportToCSV, type ExportOptions } from "$lib/utils/export/csv";
 
   interface Props {
     projectName: string;
