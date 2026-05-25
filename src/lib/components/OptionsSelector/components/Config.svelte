@@ -1,4 +1,12 @@
 <script lang="ts">
+  import { settingsStore } from "$lib/stores/settings.svelte";
+  import { sim } from "$lib/stores/simulation";
+  import {
+    importSimulation,
+    exportSimulation,
+    DEFAULT_VERSION,
+    type SimulationExport,
+  } from "$lib/utils/export/simulation";
 
   type Option = {
     label: string;
@@ -6,12 +14,28 @@
     action: () => void;
   };
 
-  function LoadSimulation() {
-
+  async function LoadSimulation() {
+    const result = await importSimulation();
+    if (result) {
+      sim.loadSimulationData(result.data.simulation);
+      settingsStore.importSettings(result.data.settings);
+    }
   }
 
-  function SaveSimulation() {
-
+  async function SaveSimulation() {
+    const data: SimulationExport = {
+      version: DEFAULT_VERSION,
+      data: {
+        simulation: sim.exportSimulationData(),
+        settings: settingsStore.exportSettings(),
+      },
+    };
+    const result = await exportSimulation(settingsStore.proyectName, data);
+    if (result) {
+      alert("Simulación exportada correctamente");
+    } else {
+      alert("Error al exportar la simulación");
+    }
   }
 
   const options: Option[] = [
@@ -24,8 +48,8 @@
       label: "Exportar simulación",
       value: "export",
       action: SaveSimulation,
-    }
-  ]
+    },
+  ];
 </script>
 
 {#each options as option}

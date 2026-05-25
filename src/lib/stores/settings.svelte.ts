@@ -1,5 +1,9 @@
 export type Theme = "dark" | "light";
 
+export type Settings = {
+  proyectName: string;
+};
+
 class SettingsStore {
   private _proyectName: string = "Simulación de Terreno 01";
   private _theme: Theme = "dark";
@@ -18,6 +22,16 @@ class SettingsStore {
 
   set theme(value: Theme) {
     this._theme = value;
+  }
+
+  exportSettings(): Settings {
+    return {
+      proyectName: this._proyectName,
+    };
+  }
+
+  importSettings(settings: Settings) {
+    this._proyectName = settings.proyectName;
   }
 }
 
