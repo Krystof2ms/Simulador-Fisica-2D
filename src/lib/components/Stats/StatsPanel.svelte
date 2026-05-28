@@ -6,9 +6,8 @@
 
   interface Props {
     isDocked: boolean;
-    projectName: string;
   }
-  let { isDocked = $bindable(true), projectName }: Props = $props();
+  let { isDocked = $bindable(true) }: Props = $props();
 
   let isCollapsed = $state(false);
   let activeTab = $state<"estado" | "serie" | "export">("estado");
@@ -131,7 +130,7 @@
         {:else if activeTab === "serie"}
           <SeriesSection />
         {:else}
-          <ExportSection {projectName} />
+          <ExportSection/>
         {/if}
       </div>
 

@@ -6,9 +6,7 @@
   import Header from "$lib/components/Header.svelte";
   import Stats from "$lib/components/Stats/Stats.svelte";
   import { sim } from "$lib/stores/simulation";
-  import { settingsStore } from "$lib/stores/settings.svelte";
   import { onMount } from "svelte";
-  import "$lib/styles/globals.css";
 
   let isDocked = $state(true);
   // Auto-pause if window becomes hidden
@@ -25,14 +23,6 @@
     };
   });
 </script>
-
-<svelte:head>
-  <title>{settingsStore.proyectName} - TerraSim 2D</title>
-  <meta
-    name="description"
-    content="Simulador físico 2D interactivo con deformación de relieve por puntos y fricción configurable por sección."
-  />
-</svelte:head>
 
 <div class="h-screen w-full bg-background">
   <main
@@ -58,7 +48,7 @@
           <!-- Absolute Overlay: Stats sidebar if NOT docked and NOT collapsed -->
           {#if !isDocked}
             <div class="absolute top-4 right-4 bottom-4 z-20 drop-shadow-2xl">
-              <Stats bind:isDocked projectName={settingsStore.proyectName} />
+              <Stats bind:isDocked />
             </div>
           {/if}
         </div>
@@ -70,7 +60,7 @@
       <!-- Right Telemetry Workspace (Sidebar Stats - Rendered inline if Docked) -->
       {#if isDocked}
         <div class="shrink-0 flex items-stretch select-none">
-          <Stats bind:isDocked projectName={settingsStore.proyectName} />
+          <Stats bind:isDocked />
         </div>
       {/if}
     </section>

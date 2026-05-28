@@ -6,6 +6,7 @@ export type SimulationData = {
     config: typeof DEFAULT_CONFIG;
     terrainPoints: PointTerrain[];
     history: HistoryFrame[];
+    initialVehicleState: Vehicle;
     vehicle: Vehicle;
     time: number;
     maxTime: number;

@@ -1,11 +1,7 @@
 <script lang="ts">
   import { sim } from "$lib/stores/simulation";
   import { exportToCSV, type ExportOptions } from "$lib/utils/export/csv";
-
-  interface Props {
-    projectName: string;
-  }
-  let { projectName }: Props = $props();
+  import { settingsStore } from "$lib/stores/settings.svelte";
 
   let exportOptions = $state<ExportOptions>({
     distance: true,
@@ -21,7 +17,7 @@
     isExporting = true;
     exportSuccess = undefined;
     try {
-      const result = await exportToCSV(sim.history, exportOptions, projectName);
+      const result = await exportToCSV(sim.history, exportOptions, settingsStore.proyectName);
       exportSuccess = result;
       if (result) {
         setTimeout(() => (exportSuccess = undefined), 3000);

@@ -49,6 +49,7 @@ const simulationDataSchema = z.object({
     config: configSchema,
     terrainPoints: z.array(pointTerrainSchema),
     history: z.array(historyFrameSchema),
+    initialVehicleState: vehicleSchema,
     vehicle: vehicleSchema,
     time: z.number(),
     maxTime: z.number(),

@@ -76,6 +76,7 @@ export class SimulationStore {
     return {
       config: this.config,
       terrainPoints: this.terrainPoints,
+      initialVehicleState: this.initialVehicleState,
       history: this.history,
       vehicle: this.vehicle,
       time: this.time,
@@ -86,6 +87,7 @@ export class SimulationStore {
   loadSimulationData(data: SimulationData) {
     this.config = data.config;
     this.terrainPoints = data.terrainPoints;
+    this.initialVehicleState = data.initialVehicleState;
     this.history = data.history;
     this.vehicle = data.vehicle;
     this.time = data.time;

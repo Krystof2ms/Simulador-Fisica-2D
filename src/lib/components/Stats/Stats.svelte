@@ -4,9 +4,8 @@
 
   interface Props {
     isDocked: boolean;
-    projectName: string;
   }
-  let { isDocked = $bindable(true), projectName }: Props = $props();
+  let { isDocked = $bindable(true) }: Props = $props();
 </script>
 
-<StatsPanel bind:isDocked {projectName} />
+<StatsPanel bind:isDocked />
