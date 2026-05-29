@@ -13,16 +13,12 @@
     const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const appWindow = getCurrentWindow();
 
-    console.log("Setting up close request listener...");
     const unlistenPromise = appWindow.onCloseRequested(async (event) => {
       event.preventDefault();
 
       const ok = await confirm("¿Salir del simulador?");
 
-      console.log("User confirmed: ", ok);
-
       if (ok) {
-        console.log("Closing store and destroying window...");
         await closeStore();
         await appWindow.destroy();
       }
