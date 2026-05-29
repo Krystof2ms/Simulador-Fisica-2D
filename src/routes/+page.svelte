@@ -5,6 +5,7 @@
   import Controls from "$lib/components/Controls.svelte";
   import Header from "$lib/components/Header.svelte";
   import Stats from "$lib/components/Stats/Stats.svelte";
+  import { settingsStore } from "$lib/stores/settings.svelte";
   import { sim } from "$lib/stores/simulation";
   import { onMount } from "svelte";
 
@@ -22,6 +23,16 @@
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   });
+ 	$effect(() => {
+     settingsStore.theme;
+
+     console.log("theme:", settingsStore.theme);
+     if (settingsStore.theme === "dark") {
+       document.documentElement.classList.add("dark");
+     } else {
+       document.documentElement.classList.remove("dark");
+     }
+   });
 </script>
 
 <div class="h-screen w-full bg-background">

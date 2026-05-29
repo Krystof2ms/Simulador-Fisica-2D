@@ -5,8 +5,8 @@ export type Settings = {
 };
 
 class SettingsStore {
-  private _proyectName: string = "Simulación de Terreno 01";
-  private _theme: Theme = "dark";
+  private _proyectName = $state("Simulación de Terreno 01");
+  private _theme = $state<Theme>("dark");
 
   get proyectName() {
     return this._proyectName;

@@ -1,34 +1,6 @@
 <script lang="ts">
   import { settingsStore } from "$lib/stores/settings.svelte";
-  import { loadStore } from "$lib/utils/store/tauri";
   import { Moon, Sun } from "lucide-svelte";
-  import { onMount } from "svelte";
-
-  const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  const stored = localStorage.getItem("theme");
-
-  function applyTheme() {
-    localStorage.setItem("theme", settingsStore.theme);
-
-    if (settingsStore.theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }
-
-  onMount(() => {
-    if (stored === "light" || stored === "dark") {
-      settingsStore.theme = stored;
-    } else {
-      loadStore().then((config) => {
-        settingsStore.theme = config.theme ?? (systemPrefersDark ? "dark" : "light");
-        console.log("theme", settingsStore.theme)
-        applyTheme();
-      });
-    }
-  });
 
   function toggleTheme() {
     if (settingsStore.theme === "dark") {
@@ -36,7 +8,6 @@
     } else {
       settingsStore.theme = "dark";
     }
-    applyTheme();
   }
 </script>
 

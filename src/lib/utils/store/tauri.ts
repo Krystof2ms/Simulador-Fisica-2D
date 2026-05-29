@@ -17,3 +17,7 @@ export async function loadStore(): Promise<Config> {
 export async function saveStore(config: Config): Promise<void> {
   await store.set('theme', config.theme);
 }
+
+export async function closeStore(): Promise<void> {
+  await store.close();
+}
