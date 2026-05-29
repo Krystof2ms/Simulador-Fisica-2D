@@ -1,4 +1,5 @@
 import type { Theme } from '$lib/stores/settings.svelte';
+import { invoke } from '@tauri-apps/api/core';
 import { LazyStore } from '@tauri-apps/plugin-store';
 
 export type Config = {
@@ -14,8 +15,13 @@ export async function loadStore(): Promise<Config> {
   return { theme };
 }
 
-export async function saveStore(config: Config): Promise<void> {
-  await store.set('theme', config.theme);
+export async function saveStore(config: Partial<Config>): Promise<void> {
+  if (config.theme !== undefined) {
+    await store.set('theme', config.theme);
+  }
+
+  await store.save();
+  await invoke("log", { message: "Save theme: " + config.theme });
 }
 
 export async function closeStore(): Promise<void> {

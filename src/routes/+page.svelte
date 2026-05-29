@@ -8,6 +8,7 @@
   import { settingsStore } from "$lib/stores/settings.svelte";
   import { sim } from "$lib/stores/simulation";
   import { onMount } from "svelte";
+  import { saveStore } from "$lib/utils/store/tauri";
 
   let isDocked = $state(true);
   // Auto-pause if window becomes hidden
@@ -23,16 +24,6 @@
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   });
- 	$effect(() => {
-     settingsStore.theme;
-
-     console.log("theme:", settingsStore.theme);
-     if (settingsStore.theme === "dark") {
-       document.documentElement.classList.add("dark");
-     } else {
-       document.documentElement.classList.remove("dark");
-     }
-   });
 </script>
 
 <div class="h-screen w-full bg-background">

@@ -14,6 +14,7 @@
     "fs:allow-exists",
     "fs:allow-mkdir",
     "fs:allow-open",
+    "store:default",
     "core:window:allow-destroy",
     {
       "identifier": "fs:scope",
@@ -28,7 +29,6 @@
           "path": "$DOWNLOAD/**/*"
         }
       ]
-    },
-    "store:default"
+    }
   ]
 }
