@@ -26,5 +26,5 @@ export const DEFAULT_TERRAIN: PointTerrain[] = [
 ];
 
 export const CANVAS_WIDTH = 1400;
-export const FLOOR_LIMIT_Y = 510;
+export const FLOOR_LIMIT_Y = 700;
 export const MIN_TERRAIN_Y = 0;

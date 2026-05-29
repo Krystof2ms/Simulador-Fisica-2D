@@ -158,7 +158,7 @@
     c.save();
     c.translate(-cameraX, 0);
 
-    render.drawFloorLimit(c, width, cameraX, 510);
+    render.drawFloorLimit(c, width, cameraX, sim.floorLimitY);
     render.drawTerrain(
       c,
       sim.segments,

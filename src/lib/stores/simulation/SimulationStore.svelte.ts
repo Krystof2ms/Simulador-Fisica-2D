@@ -21,9 +21,9 @@ import { editor } from "./EditorStore.svelte";
 import type { SimulationData } from "./type";
 
 export class SimulationStore {
-  private readonly canvasWidth = CANVAS_WIDTH;
-  private readonly floorLimitY = FLOOR_LIMIT_Y;
-  private readonly minTerrainY = MIN_TERRAIN_Y;
+  public readonly canvasWidth = CANVAS_WIDTH;
+  public readonly floorLimitY = FLOOR_LIMIT_Y;
+  public readonly minTerrainY = MIN_TERRAIN_Y;
 
   config = $state(structuredClone(DEFAULT_CONFIG));
 
