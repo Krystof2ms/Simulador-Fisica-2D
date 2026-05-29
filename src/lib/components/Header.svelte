@@ -4,6 +4,7 @@
   import { Car } from "lucide-svelte";
   import ThemeSelector from "./ThemeSelector.svelte";
   import Selector from "./OptionsSelector/Selector.svelte";
+  import icon from "$lib/assets/icon.png";
 </script>
 
 <header
@@ -12,9 +13,9 @@
   <div class="flex items-center gap-3.5">
     <!-- Logo vehicle badge -->
     <div
-      class="w-16 h-12 bg-chart-2 rounded-xl flex items-center justify-center text-background shadow-md shadow-cyan-500/20"
+      class="w-16 h-12 border-chart-2 border-3 rounded-xl flex items-center justify-center text-background shadow-md shadow-cyan-500/20"
     >
-      <Car class="w-6 h-6" />
+      <img src={icon} alt="icon" class="w-12 h-12" />
     </div>
 
     <div class="flex flex-col">

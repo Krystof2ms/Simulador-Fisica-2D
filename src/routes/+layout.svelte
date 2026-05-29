@@ -4,7 +4,6 @@
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import { settingsStore } from "$lib/stores/settings.svelte";
   import { closeStore, loadStore, saveStore } from "$lib/utils/store/tauri";
-  import { invoke } from "@tauri-apps/api/core";
   import "$lib/styles/globals.css";
 
   let initialized = $state(false);
@@ -28,10 +27,6 @@
       settingsStore.theme = theme ?? (systemPrefersDark ? "dark" : "light");
 
       initialized = true;
-
-      invoke("log", {
-        message: "Loaded theme: " + settingsStore.theme,
-      });
     });
 
     return () => {
