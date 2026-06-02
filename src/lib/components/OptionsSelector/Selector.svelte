@@ -2,6 +2,7 @@
   import { Settings } from "lucide-svelte";
   import ThemeSelector from "$lib/components/ThemeSelector.svelte";
   import Config from "./components/Config.svelte";
+  import About from "./components/About.svelte";
 
   let isOpen = $state(false);
 
@@ -23,6 +24,7 @@
       class="absolute right-0 top-full mt-2 z-99999 w-56 rounded-xl border border-border bg-background shadow-2xl p-2 grid gap-2"
     >
       <Config />
+      <About />
       <ThemeSelector />
     </div>
   {/if}

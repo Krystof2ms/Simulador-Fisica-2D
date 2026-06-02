@@ -3,10 +3,12 @@
   "identifier": "default",
   "description": "Capability for the main window",
   "windows": [
-    "main"
+    "main",
+    "about"
   ],
   "permissions": [
     "core:default",
+    "core:app:allow-version",
     "opener:default",
     "dialog:default",
     "fs:write-all",
@@ -16,6 +18,9 @@
     "fs:allow-open",
     "store:default",
     "core:window:allow-destroy",
+    "core:window:allow-set-focus",
+    "core:webview:default",
+    "core:webview:allow-create-webview-window",
     {
       "identifier": "fs:scope",
       "allow": [

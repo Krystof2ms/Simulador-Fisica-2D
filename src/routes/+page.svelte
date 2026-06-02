@@ -5,10 +5,8 @@
   import Controls from "$lib/components/Controls.svelte";
   import Header from "$lib/components/Header.svelte";
   import Stats from "$lib/components/Stats/Stats.svelte";
-  import { settingsStore } from "$lib/stores/settings.svelte";
   import { sim } from "$lib/stores/simulation";
   import { onMount } from "svelte";
-  import { saveStore } from "$lib/utils/store/tauri";
 
   let isDocked = $state(true);
   // Auto-pause if window becomes hidden

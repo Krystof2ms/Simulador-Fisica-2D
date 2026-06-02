@@ -244,7 +244,7 @@
   </div>
 </div>
 
-<style>
+<style type="text/tailwindcss">
   @reference "#globals.css";
 
   .input-group {

@@ -1,10 +1,9 @@
 <script>
   import { settingsStore } from "$lib/stores/settings.svelte";
   import { sim } from "$lib/stores/simulation";
-  import { Car } from "lucide-svelte";
-  import ThemeSelector from "./ThemeSelector.svelte";
   import Selector from "./OptionsSelector/Selector.svelte";
   import icon from "$lib/assets/icon.png";
+  import { SquarePen } from "lucide-svelte";
 </script>
 
 <header
@@ -37,19 +36,7 @@
   <!-- Project Name Box & Active status info -->
   <div class="flex items-center gap-4">
     <div class="project-name-box min-w-60">
-      <svg
-        class="w-4 h-4 text-muted-foreground"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-        />
-      </svg>
+      <SquarePen class="w-4 h-4 text-muted-foreground" />
       <input
         type="text"
         bind:value={settingsStore.proyectName}
@@ -80,7 +67,7 @@
   </div>
 </header>
 
-<style>
+<style type="text/tailwindcss">
   @reference "#globals.css";
 
   .project-name-box {
