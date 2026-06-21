@@ -12,7 +12,7 @@ export async function openAboutWindow() {
 
   const window = new WebviewWindow(windowName, {
     title: "Acerca de TerraSim 2D",
-    url: "/about",
+    url: "/view/about",
     width: 560,
     height: 520,
     resizable: false,
