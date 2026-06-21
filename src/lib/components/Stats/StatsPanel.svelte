@@ -3,6 +3,7 @@
   import StateSection from "./sections/StateSection.svelte";
   import SeriesSection from "./sections/SeriesSection.svelte";
   import ExportSection from "./sections/ExportSection.svelte";
+  import { ChevronLeft, ChevronRight, PanelRightClose, PanelRightOpen } from "lucide-svelte";
 
   interface Props {
     isDocked: boolean;
@@ -41,33 +42,9 @@
     title={isCollapsed ? "Desplegar Panel" : "Colapsar Panel"}
   >
     {#if isCollapsed}
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15.75 19.5L8.25 12l7.5-7.5"
-        />
-      </svg>
+      <ChevronLeft class="w-4 h-4" strokeWidth={3} />
     {:else}
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M8.25 4.5l7.5 7.5-7.5 7.5"
-        />
-      </svg>
+      <ChevronRight class="w-4 h-4" strokeWidth={3} />
     {/if}
   </button>
 
@@ -96,21 +73,13 @@
           title={isDocked ? "Desanclar Panel" : "Anclar Panel"}
           class="p-2 rounded-lg border transition-all cursor-pointer focus:outline-none {isDocked
             ? 'bg-foreground border-border/80 text-background shadow-sm'
-            : 'bg-background border-border text-muted-foreground hover:bg-background/60 hover:text-muted-foreground'}"
+          : 'bg-background border-border text-muted-foreground hover:bg-background/60 hover:text-muted-foreground'}"
         >
-          <svg
-            class="w-4 h-4 rotate-45"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19.5 12h-15m0 0l3-3m-3 3l3 3"
-            />
-          </svg>
+          {#if isDocked}
+            <PanelRightOpen class="w-4 h-4" strokeWidth={2.5} />
+          {:else}
+            <PanelRightClose class="w-4 h-4" strokeWidth={2.5} />
+          {/if}
         </button>
       </div>
 

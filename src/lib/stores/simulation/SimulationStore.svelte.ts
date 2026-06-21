@@ -61,7 +61,7 @@ export class SimulationStore {
     velocity: { x: 0, y: 0 },
     acceleration: { x: 0, y: 0 },
     angle: 0,
-    mass: 800,
+    mass: 50,
     width: 44,
     height: 22,
   });

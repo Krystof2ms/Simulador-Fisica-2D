@@ -1,5 +1,7 @@
 <script lang="ts">
   import { sim } from "$lib/stores/simulation";
+  import { Pause, Play, RotateCcw } from "lucide-svelte";
+
   const TIMELINE_MARKS = 6;
   const timelineLabels = $derived(
     Array.from(
@@ -46,19 +48,9 @@
             : "Iniciar Simulación"}
       >
         {#if sim.isPlaying}
-          <!-- Pause Icon -->
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              fill-rule="evenodd"
-              d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          <Pause class="w-5 h-5" fill="currentColor" strokeWidth={0} />
         {:else}
-          <!-- Play Icon -->
-          <svg class="w-5 h-5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
+          <Play class="w-5 h-5 translate-x-0.5" fill="currentColor" strokeWidth={0} />
         {/if}
       </button>
 
@@ -68,19 +60,7 @@
         class="w-10 h-10 flex items-center justify-center rounded-xl bg-border/50 hover:bg-border/40 active:bg-border/30 text-muted-foreground border border-border cursor-pointer transition-all focus:outline-none shadow-sm hover:scale-[1.02] active:scale-[0.98]"
         title="Reiniciar móvil al inicio"
       >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-          />
-        </svg>
+        <RotateCcw class="w-5 h-5" strokeWidth={2.5} />
       </button>
 
       <button
