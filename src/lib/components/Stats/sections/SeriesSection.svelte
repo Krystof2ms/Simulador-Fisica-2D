@@ -1,10 +1,12 @@
 <script lang="ts">
   import { sim } from "$lib/stores/simulation";
   import SeriesUPlot from "$lib/components/SeriesUPlot.svelte";
+  import SeriesExpandedDialog from "../components/SeriesExpandedDialog.svelte";
 
   const SCALE = 25;
 
   let seriesMode = $state<"dist" | "vel" | "acc">("vel");
+  let isExpanded = $state(false);
 
   const seriesTitle = $derived(
     seriesMode === "dist"
@@ -57,6 +59,15 @@
     <div
       class="w-full h-80 border-2 border-border bg-background rounded-xl relative shadow-inner p-2 flex items-center justify-center mt-3"
     >
+      <button
+        type="button"
+        class="absolute right-3 top-3 z-10 rounded-lg border border-border bg-card/95 px-2.5 py-1.5 text-xs font-bold text-muted-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:bg-slate-100 hover:text-foreground hover:shadow focus:outline-none"
+        onclick={() => (isExpanded = true)}
+        title="Expandir gráfico"
+      >
+        Expandir
+      </button>
+
       <SeriesUPlot
         history={sim.history}
         mode={seriesMode}
@@ -95,3 +106,11 @@
     </div>
   </div>
 </div>
+
+<SeriesExpandedDialog
+  bind:open={isExpanded}
+  history={sim.history}
+  mode={seriesMode}
+  scale={SCALE}
+  title={seriesTitle}
+/>
