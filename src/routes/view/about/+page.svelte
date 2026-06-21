@@ -28,7 +28,7 @@
       editable, con fuerza impulsora, fricción, pendiente y telemetría.
     </p>
     <p class="mt-6 text-xs text-muted-foreground">
-      &copy; Copyright 2026 - Todos los derechos reservados.
+      &copy; Copyright 2026 - Krystof2ms Todos los derechos reservados.
     </p>
 
     <a href="https://github.com/Krystof2ms" target="_blank" class="mt-6 text-xs text-muted-foreground flex items-center gap-3">
