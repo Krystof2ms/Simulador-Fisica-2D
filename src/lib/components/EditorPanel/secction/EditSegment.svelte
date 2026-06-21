@@ -104,7 +104,7 @@
       Ajusta pendiente ascendente (+) o descendente (-).
     </div>
   </div>
-{:else if editor.activeTool == "friction"}
+{:else if editor.activeTool === "friction"}
   <div
     class="p-3 rounded-xl border-2 border-sidebar-primary/50 bg-sidebar text-sidebar-primary text-xs font-semibold"
   >

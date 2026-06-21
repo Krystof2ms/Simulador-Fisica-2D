@@ -132,7 +132,7 @@
 
   // Keyboard delete listener
   function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Delete" || e.key === "Backspace") {
+    if (e.key === "Delete") {
       if (editor.selectedPointIndex !== null) {
         sim.deletePoint(editor.selectedPointIndex);
       }
@@ -242,15 +242,16 @@
     class="relative flex-1 min-h-0 w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner flex justify-center items-center p-2"
   >
     <!-- Key bindings hint badge -->
+    <!--
     <div
-      class="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-sm text-xs font-medium text-slate-200 shadow border border-slate-700/50 flex items-center gap-1.5"
-    >
+      class="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-sm text-xs font-medium text-slate-200 shadow border border-slate-700/50 flex items-center gap-1.5 none">
       <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"
       ></span>
       <span
         >Conducción manual desactivada • simulación por peso + fuerza impulsora</span
       >
     </div>
+    -->
 
     {#if editor.activeTool === "points"}
       <div

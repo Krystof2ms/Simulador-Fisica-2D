@@ -1,5 +1,6 @@
 <script lang="ts">
   import { sim, editor } from "$lib/stores/simulation";
+  import EditPoint from "./secction/EditPoint.svelte";
   import EditSegment from "./secction/EditSegment.svelte";
   import EditVehicle from "./secction/EditVehicle.svelte";
 </script>
@@ -17,6 +18,8 @@
       </div>
 
       <EditSegment />
+
+      <EditPoint />
 
       <!-- line -->
       <div class="h-px bg-slate-200 my-1"></div>
