@@ -24,8 +24,8 @@
   let plotWidth = $state(0);
   let plotHeight = $state(0);
 
-  const chartWidth = $derived(Math.max(plotWidth - 24, 320));
-  const chartHeight = $derived(Math.max(plotHeight - 24, 240));
+  const chartWidth = $derived(Math.max(plotWidth - 80, 360));
+  const chartHeight = $derived(Math.max(plotHeight - 72, 260));
 
   function close() {
     open = false;
@@ -54,9 +54,9 @@
     ></button>
 
     <section
-      class="relative z-10 flex h-[min(82vh,720px)] w-[min(92vw,1180px)] flex-col rounded-2xl border-2 border-border bg-card shadow-2xl"
+      class="relative z-10 flex h-[min(84vh,850px)] w-[min(94vw,1280px)] flex-col rounded-2xl border-2 border-border bg-card shadow-2xl"
     >
-      <h2 class="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+      <header class="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
         <div class="flex flex-col">
           <span class="text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Gráfico expandido
@@ -71,15 +71,15 @@
         >
           Cerrar
         </button>
-      </h2>
+      </header>
 
       <div
-        class="min-h-0 flex-1 p-4"
+        class="min-h-0 flex-1 px-8 pb-8 pt-6"
         bind:clientWidth={plotWidth}
         bind:clientHeight={plotHeight}
       >
         <div
-          class="h-full w-full rounded-xl border-2 border-border bg-background p-3 shadow-inner"
+          class="h-full w-full rounded-xl border-2 border-border bg-background px-6 pb-5 pt-6 shadow-inner"
         >
           <SeriesUPlot
             {history}
