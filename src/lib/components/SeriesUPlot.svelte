@@ -74,14 +74,17 @@
       axes: [
         {
           stroke: "#94a3b8",
+          size: 34,
+          gap: 6,
           grid: { stroke: "#e2e8f0", width: 1 },
           values: (_u, splits) => splits.map((v) => `${Number(v).toFixed(1)}s`),
         },
         {
           stroke: "#94a3b8",
+          size: 72,
+          gap: 8,
           grid: { stroke: "#f1f5f9", width: 1 },
-          values: (_u, splits) =>
-            splits.map((v) => `${Number(v).toFixed(2)} ${metricUnit}`),
+          values: (_u, splits) => splits.map((v) => Number(v).toFixed(2)),
         },
       ],
       series: [
@@ -122,7 +125,7 @@
 </script>
 
 <div
-  class="w-full h-full flex items-center justify-center overflow-hidden"
+  class="w-full h-full flex items-center justify-center overflow-visible"
   bind:this={container}
 >
   {#if history.length <= 1}
