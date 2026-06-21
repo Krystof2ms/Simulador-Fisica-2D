@@ -21,6 +21,7 @@
     width?: number;
     height?: number;
     showHoverInfo?: boolean;
+    yAxisSize?: number;
   }
 
   let {
@@ -30,6 +31,7 @@
     width = 260,
     height = 140,
     showHoverInfo = false,
+    yAxisSize = 56,
   }: Props = $props();
 
   let container: HTMLDivElement;
@@ -110,7 +112,7 @@
         },
         {
           stroke: "#94a3b8",
-          size: 72,
+          size: yAxisSize,
           gap: 8,
           grid: { stroke: "#f1f5f9", width: 1 },
           values: (_u, splits) => splits.map((v) => Number(v).toFixed(2)),
@@ -178,7 +180,7 @@
     >
       {#if hoverPoint}
         <span class="font-mono text-foreground">
-          Tiempo: {hoverPoint.time.toFixed(3)} s · Valor: {hoverPoint.value.toFixed(3)}
+          Tiempo: {hoverPoint.time.toFixed(3)} s · {metricLabel}: {hoverPoint.value.toFixed(3)}
           {metricUnit}
         </span>
       {:else}

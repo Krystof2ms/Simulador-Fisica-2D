@@ -88,6 +88,7 @@
             width={chartWidth}
             height={chartHeight}
             showHoverInfo
+            yAxisSize={72}
           />
         </div>
       </div>

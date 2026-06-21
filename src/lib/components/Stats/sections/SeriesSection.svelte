@@ -10,7 +10,7 @@
   let plotWidth = $state(0);
   let plotHeight = $state(0);
 
-  const chartWidth = $derived(Math.max(plotWidth - 56, 320));
+  const chartWidth = $derived(Math.max(plotWidth - 28, 340));
   const chartHeight = $derived(Math.max(plotHeight - 64, 240));
 
   const seriesTitle = $derived(
@@ -62,7 +62,7 @@
     </div>
 
     <div
-      class="w-full h-96 border-2 border-border bg-background rounded-xl relative shadow-inner px-5 pb-5 pt-12 flex items-center justify-center mt-3"
+      class="w-full h-96 border-2 border-border bg-background rounded-xl relative shadow-inner px-3 pb-5 pt-12 flex items-center justify-center mt-3"
       bind:clientWidth={plotWidth}
       bind:clientHeight={plotHeight}
     >
