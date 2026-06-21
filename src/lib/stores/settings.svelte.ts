@@ -1,4 +1,4 @@
-export type Theme = "dark" | "light";
+import type { Theme } from "$lib/utils/types";
 
 export type Settings = {
   proyectName: string;

@@ -2,7 +2,7 @@ import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 
 const windowName = "about";
 
-export async function openAboutWindow() {
+export async function openAboutWindow(theme: "dark" | "light") {
   const existWindow = await WebviewWindow.getByLabel(windowName);
 
   if (existWindow) {
@@ -12,7 +12,7 @@ export async function openAboutWindow() {
 
   const window = new WebviewWindow(windowName, {
     title: "Acerca de TerraSim 2D",
-    url: "/view/about",
+    url: `/view/about?theme=${theme}`,
     width: 560,
     height: 520,
     resizable: false,

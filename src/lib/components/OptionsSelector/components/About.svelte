@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { openAboutWindow } from "$lib/utils/view/about";
   import type { WebviewWindow } from "@tauri-apps/api/webviewWindow";
+  import { settingsStore } from "$lib/stores/settings.svelte";
+  import { openAboutWindow } from "$lib/utils/view/about";
 
   let aboutWindow = $state<WebviewWindow | null>(null);
   async function openAbout() {
     try {
-      aboutWindow = await openAboutWindow();
+      aboutWindow = await openAboutWindow(settingsStore.theme);
     } catch (error) {
       console.error("No se pudo abrir la ventana About", error);
       window.location.href = "/about";

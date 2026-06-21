@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "simulador-fisica-2d",
+        "title": "TerraSim 2D",
         "width": 1300,
         "height": 800,
         "minWidth": 1000,

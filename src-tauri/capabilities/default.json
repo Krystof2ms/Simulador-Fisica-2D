@@ -18,6 +18,7 @@
     "fs:allow-open",
     "store:default",
     "core:window:allow-destroy",
+    "core:window:allow-close",
     "core:window:allow-set-focus",
     "core:webview:default",
     "core:webview:allow-create-webview-window",

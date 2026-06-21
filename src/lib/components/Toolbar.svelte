@@ -2,7 +2,14 @@
   import { sim, editor, type ToolType } from "$lib/stores/simulation";
   import { ArrowDown, ArrowUp, Eye, Info, Link, Move, RefreshCw, Zap } from "lucide-svelte";
 
-  const tools = [
+  type Tool = {
+    id: ToolType;
+    label: string;
+    icon: typeof Eye;
+    desc: string;
+  };
+
+  const tools: Tool[] = [
     {
       id: "points",
       label: "Puntos",

@@ -1,9 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { emit } from "@tauri-apps/api/event";
   import { confirm } from "@tauri-apps/plugin-dialog";
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import { settingsStore } from "$lib/stores/settings.svelte";
   import { closeStore, loadStore, saveStore } from "$lib/utils/store/tauri";
+  import { EVENTS } from "$lib/utils/view/constants";
 
   let initialized = $state(false);
 
@@ -17,6 +19,7 @@
       const ok = await confirm("¿Salir del simulador?");
 
       if (ok) {
+        emit(EVENTS.MAIN_CLOSE, { closed: true });
         await closeStore();
         await appWindow.destroy();
       }
@@ -49,6 +52,10 @@
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    emit(EVENTS.THEME_SELECTED_CHANGE, {
+      theme: settingsStore.theme
+    })
   });
 </script>
 
