@@ -51,7 +51,7 @@
   <div class="flex flex-wrap items-center justify-between gap-4">
     <!-- Left: Tool selector -->
     <div
-      class="flex items-center gap-1.5 bg-sidebar-accent p-1 rounded-xl border border-border"
+      class="flex flex-wrap items-center gap-1.5 bg-sidebar-accent p-1 rounded-xl border border-border justify-center"
     >
       {#each tools as tool}
         {@const isActive = editor.activeTool === tool.id}
