@@ -20,6 +20,7 @@
     scale?: number;
     width?: number;
     height?: number;
+    showHoverInfo?: boolean;
   }
 
   let {
@@ -28,10 +29,12 @@
     scale = 30,
     width = 260,
     height = 140,
+    showHoverInfo = false,
   }: Props = $props();
 
   let container: HTMLDivElement;
   let chart: uPlot | null = null;
+  let hoverPoint = $state<{ time: number; value: number } | null>(null);
 
   const metricLabel = $derived(
     mode === "dist"
@@ -66,7 +69,33 @@
       width,
       height,
       legend: { show: false },
-      cursor: { show: false },
+      cursor: {
+        show: showHoverInfo,
+        x: showHoverInfo,
+        y: showHoverInfo,
+      },
+      hooks: {
+        setCursor: [
+          (self) => {
+            if (!showHoverInfo) return;
+
+            const idx = self.cursor.idx;
+            if (idx === null || idx === undefined) {
+              hoverPoint = null;
+              return;
+            }
+
+            const time = self.data[0][idx];
+            const value = self.data[1][idx];
+            if (typeof time !== "number" || typeof value !== "number") {
+              hoverPoint = null;
+              return;
+            }
+
+            hoverPoint = { time, value };
+          },
+        ],
+      },
       scales: {
         x: { time: false },
         y: { auto: true },
@@ -122,15 +151,39 @@
   onDestroy(() => {
     if (chart) chart.destroy();
   });
+
+  function clearHover() {
+    hoverPoint = null;
+  }
 </script>
 
-<div
-  class="w-full h-full flex items-center justify-center overflow-visible"
-  bind:this={container}
->
-  {#if history.length <= 1}
-    <div class="text-xs font-semibold text-muted-foreground/10 text-center px-4">
-      Inicia la simulación para registrar y graficar series.
+<div class="flex h-full w-full flex-col overflow-visible">
+  <div
+    class="min-h-0 w-full flex-1 flex items-center justify-center overflow-visible"
+    bind:this={container}
+    role="img"
+    aria-label={`Gráfico de ${metricLabel.toLowerCase()} en el tiempo`}
+    onmouseleave={clearHover}
+  >
+    {#if history.length <= 1}
+      <div class="text-xs font-semibold text-muted-foreground/10 text-center px-4">
+        Inicia la simulación para registrar y graficar series.
+      </div>
+    {/if}
+  </div>
+
+  {#if showHoverInfo}
+    <div
+      class="mt-3 flex min-h-10 items-center justify-center rounded-xl border border-border bg-card px-4 py-2 text-sm font-bold text-muted-foreground shadow-sm"
+    >
+      {#if hoverPoint}
+        <span class="font-mono text-foreground">
+          Tiempo: {hoverPoint.time.toFixed(3)} s · Valor: {hoverPoint.value.toFixed(3)}
+          {metricUnit}
+        </span>
+      {:else}
+        <span>Pasa el cursor sobre el gráfico para ver tiempo y valor.</span>
+      {/if}
     </div>
   {/if}
 </div>

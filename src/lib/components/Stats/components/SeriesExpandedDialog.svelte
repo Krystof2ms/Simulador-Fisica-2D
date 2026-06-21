@@ -25,7 +25,7 @@
   let plotHeight = $state(0);
 
   const chartWidth = $derived(Math.max(plotWidth - 80, 360));
-  const chartHeight = $derived(Math.max(plotHeight - 72, 260));
+  const chartHeight = $derived(Math.max(plotHeight - 128, 260));
 
   function close() {
     open = false;
@@ -87,6 +87,7 @@
             {scale}
             width={chartWidth}
             height={chartHeight}
+            showHoverInfo
           />
         </div>
       </div>
